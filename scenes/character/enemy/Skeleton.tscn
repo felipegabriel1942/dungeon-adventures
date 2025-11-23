@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3 uid="uid://cra3c44qngxn8"]
+
+[ext_resource type="Script" uid="uid://m4u1ej55ybwh" path="res://scenes/character/enemy/Skeleton.cs" id="1_m4q1t"]
+[ext_resource type="Texture2D" uid="uid://defhp0rcn8p1v" path="res://assets/characters/Skeleton.png" id="1_xdbfw"]
+[ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="2_a08e4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2w6i"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(0, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3cs15"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(32, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ks87n"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(64, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gx4p"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(96, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1edn"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a08e4"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m4q1t"]
+atlas = ExtResource("1_xdbfw")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h2w6i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2w6i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3cs15")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ks87n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gx4p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1edn")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a08e4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m4q1t")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}]
+
+[node name="Skeleton" type="Node2D"]
+script = ExtResource("1_m4q1t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_a08e4")
+centered = false
+offset = Vector2(0, -4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_h2w6i")
+animation = &"attack"
+autoplay = "idle"
+frame = 4
+frame_progress = 1.0
+offset = Vector2(8, -6)

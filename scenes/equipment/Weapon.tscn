@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dukb0ioeynfmm"]
+
+[ext_resource type="Script" uid="uid://c04w1r3imihyh" path="res://scenes/equipment/Weapon.cs" id="1_t24f6"]
+
+[node name="Weapon" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_t24f6")

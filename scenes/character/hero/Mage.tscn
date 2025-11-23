@@ -1,0 +1,93 @@
+[gd_scene load_steps=14 format=3 uid="uid://dqmkuh2llmqja"]
+
+[ext_resource type="Texture2D" uid="uid://bokf0bo43svxt" path="res://assets/characters/Mage.png" id="1_a78et"]
+[ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_v54v6"]
+[ext_resource type="Script" uid="uid://csxywimq3jrjw" path="res://scenes/character/hero/Mage.cs" id="1_wt5ga"]
+[ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="4_62wif"]
+[ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="5_p5lce"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_62wif"]
+atlas = ExtResource("1_a78et")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5lce"]
+atlas = ExtResource("1_a78et")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yngp3"]
+atlas = ExtResource("1_a78et")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wt5ga"]
+atlas = ExtResource("1_a78et")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v54v6"]
+atlas = ExtResource("1_a78et")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sseg3"]
+atlas = ExtResource("1_a78et")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5kxw"]
+atlas = ExtResource("1_a78et")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_62wif"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_62wif")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5lce")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yngp3")
+}],
+"loop": true,
+"name": &"cast",
+"speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wt5ga")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v54v6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sseg3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5kxw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Mage" type="Node2D"]
+script = ExtResource("1_wt5ga")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_v54v6")
+centered = false
+offset = Vector2(0, -4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_62wif")
+animation = &"cast"
+autoplay = "idle"
+centered = false
+offset = Vector2(0, -5)
+
+[node name="Magic" parent="." instance=ExtResource("4_62wif")]
+unique_name_in_owner = true
+magicScene = ExtResource("5_p5lce")

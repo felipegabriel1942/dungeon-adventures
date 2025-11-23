@@ -1,0 +1,103 @@
+[gd_scene load_steps=15 format=3 uid="uid://wpuexcsgtmrb"]
+
+[ext_resource type="Script" uid="uid://bxbc0aloqabk3" path="res://scenes/character/hero/Warrior.cs" id="1_o24pb"]
+[ext_resource type="Texture2D" uid="uid://di6kcyudplpuf" path="res://assets/characters/Warrior.png" id="1_q41t4"]
+[ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_xvo0l"]
+[ext_resource type="PackedScene" uid="uid://dukb0ioeynfmm" path="res://scenes/equipment/Weapon.tscn" id="4_o24pb"]
+[ext_resource type="PackedScene" uid="uid://cj2at7rklrtt7" path="res://scenes/equipment/Sword.tscn" id="5_10y84"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tdtf"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(0, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xyvlm"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(16, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ui8ss"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(32, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b0thr"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(48, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvo0l"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(0, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_exgx3"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o24pb"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_10y84"]
+atlas = ExtResource("1_q41t4")
+region = Rect2(48, 48, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2rco0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4tdtf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xyvlm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ui8ss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b0thr")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvo0l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_exgx3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o24pb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_10y84")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Warrior" type="Node2D"]
+z_index = 1
+y_sort_enabled = true
+script = ExtResource("1_o24pb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xvo0l")
+centered = false
+offset = Vector2(0, -4)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_2rco0")
+animation = &"attack"
+autoplay = "idle"
+frame = 3
+frame_progress = 1.0
+centered = false
+offset = Vector2(0, -5)
+
+[node name="Weapon" parent="." instance=ExtResource("4_o24pb")]
+unique_name_in_owner = true
+weaponScene = ExtResource("5_10y84")
+
+[editable path="Weapon"]

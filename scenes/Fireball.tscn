@@ -1,0 +1,46 @@
+[gd_scene load_steps=7 format=3 uid="uid://ba4x7a8wfsuae"]
+
+[ext_resource type="Texture2D" uid="uid://bvr4ywkm1hx3d" path="res://assets/characters/Fireball.png" id="1_t6ihn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6ihn"]
+atlas = ExtResource("1_t6ihn")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6se3a"]
+atlas = ExtResource("1_t6ihn")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2map7"]
+atlas = ExtResource("1_t6ihn")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_arubn"]
+atlas = ExtResource("1_t6ihn")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_rfmch"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6ihn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6se3a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2map7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_arubn")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}]
+
+[node name="Fireball" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_rfmch")
+animation = &"attack"
+autoplay = "attack"
+frame_progress = 1.0
+centered = false

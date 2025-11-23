@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        "**/*.cs.uid": true,
+        "**/*.import": true,
+        "**/*.tres": true,
+        "**/*.tscn": true,
+        "project.godot": true
+    },
+    "explorer.excludeGitIgnore": false
+}

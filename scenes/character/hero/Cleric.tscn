@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://b8ot86ctcsks2"]
+
+[ext_resource type="Texture2D" uid="uid://ck5ykryej4jgh" path="res://assets/characters/Cleric.png" id="1_eufvm"]
+[ext_resource type="Script" uid="uid://cjaqm4cmfy35h" path="res://scenes/character/hero/Cleric.cs" id="1_smrnq"]
+[ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_u7maj"]
+[ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="3_ht767"]
+[ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="4_smrnq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smrnq"]
+atlas = ExtResource("1_eufvm")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u7maj"]
+atlas = ExtResource("1_eufvm")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6dhgw"]
+atlas = ExtResource("1_eufvm")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ht767"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smrnq")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u7maj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6dhgw")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 3.0
+}]
+
+[node name="Cleric" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_smrnq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(8, 11)
+texture = ExtResource("1_u7maj")
+offset = Vector2(0, -7)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -1)
+sprite_frames = SubResource("SpriteFrames_ht767")
+animation = &"idle"
+autoplay = "idle"
+centered = false
+offset = Vector2(0, -6)
+
+[node name="Magic" parent="." instance=ExtResource("3_ht767")]
+unique_name_in_owner = true
+magicScene = ExtResource("4_smrnq")

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpu3mi75n1rh"]
+
+[ext_resource type="Script" uid="uid://uuouqdjy6287" path="res://scenes/Magic.cs" id="1_fsofq"]
+
+[node name="Magic" type="Node2D"]
+position = Vector2(-1, 19)
+script = ExtResource("1_fsofq")
