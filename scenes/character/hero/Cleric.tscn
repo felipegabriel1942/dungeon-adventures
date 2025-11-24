@@ -41,6 +41,7 @@ animations = [{
 }]
 
 [node name="Cleric" type="Node2D"]
+top_level = true
 y_sort_enabled = true
 script = ExtResource("1_smrnq")
 

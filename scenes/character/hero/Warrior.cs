@@ -10,15 +10,7 @@ public partial class Warrior : Character
     {
         animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         weapon = GetNode<Weapon>("%Weapon");
-    }
-
-
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        if (@event.IsActionPressed("attack") && !isAttacking)
-        {
-            Attack();
-        }
+        base._Ready();
     }
 
     public override void Attack()

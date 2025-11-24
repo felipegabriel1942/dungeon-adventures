@@ -8,15 +8,7 @@ public partial class Skeleton : Character
     public override void _Ready()
     {
         animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-    }
-
-
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        if (@event.IsActionPressed("attack") && !isAttacking)
-        {
-            Attack();
-        }
+        base._Ready();
     }
 
     public override void Attack()
