@@ -3,8 +3,6 @@ using Godot;
 
 public partial class Skeleton : Character
 {
-    private AnimatedSprite2D animatedSprite2D;
-
     public override void _Ready()
     {
         animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -15,12 +13,12 @@ public partial class Skeleton : Character
     {
         animatedSprite2D.Play("attack");
         animatedSprite2D.AnimationFinished += OnAttackFinished;
-        isAttacking = true;
+        IsAttacking = true;
     }
 
     private void OnAttackFinished()
     {
-        isAttacking = false;
+        IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
 

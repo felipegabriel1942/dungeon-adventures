@@ -4,7 +4,6 @@ using Godot;
 public partial class Mage : Character
 {
     
-    private AnimatedSprite2D animatedSprite2D;
     private Magic magic;
 
     public override void _Ready()
@@ -18,14 +17,14 @@ public partial class Mage : Character
     {
         animatedSprite2D.Play("attack");
         magic.Visible = true;
-        isAttacking = true;
+        IsAttacking = true;
         magic.Attack();
         magic.MagicFinished += OnAttackFinished;
     }
 
     private void OnAttackFinished()
     {
-        isAttacking = false;
+        IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
 }

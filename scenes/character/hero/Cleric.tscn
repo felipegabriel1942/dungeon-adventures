@@ -44,6 +44,7 @@ animations = [{
 top_level = true
 y_sort_enabled = true
 script = ExtResource("1_smrnq")
+Speed = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 11)

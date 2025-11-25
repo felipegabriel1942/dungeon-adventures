@@ -3,7 +3,6 @@ using Game.Character;
 
 public partial class Warrior : Character
 {
-    private AnimatedSprite2D animatedSprite2D;
     private Weapon weapon;
 
     public override void _Ready()
@@ -17,14 +16,14 @@ public partial class Warrior : Character
     {
         animatedSprite2D.Play("attack");
         weapon.Visible = true;
-        isAttacking = true;
+        IsAttacking = true;
         weapon.Attack();
         weapon.AttackFinished += OnAttackFinished;
     }
 
     private void OnAttackFinished()
     {
-        isAttacking = false;
+        IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
 }

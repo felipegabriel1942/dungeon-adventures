@@ -3,7 +3,6 @@ using Godot;
 
 public partial class Cleric : Character
 {
-    private AnimatedSprite2D animatedSprite2D;
     private Magic magic;
 
     public override void _Ready()
@@ -17,14 +16,14 @@ public partial class Cleric : Character
     {
         animatedSprite2D.Play("attack");
         magic.Visible = true;
-        isAttacking = true;
+        IsAttacking = true;
         magic.Attack();
         magic.MagicFinished += OnAttackFinished;
     }
 
     private void OnAttackFinished()
     {
-        isAttacking = false;
+        IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
 

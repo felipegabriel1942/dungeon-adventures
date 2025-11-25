@@ -68,6 +68,7 @@ animations = [{
 
 [node name="Skeleton" type="Node2D"]
 script = ExtResource("1_m4q1t")
+Speed = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_a08e4")

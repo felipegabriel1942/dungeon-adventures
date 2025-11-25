@@ -4,3 +4,6 @@
 
 [node name="GridManager" type="Node"]
 script = ExtResource("1_ejrrb")
+
+[node name="HighlightLayer" type="Node2D" parent="."]
+unique_name_in_owner = true

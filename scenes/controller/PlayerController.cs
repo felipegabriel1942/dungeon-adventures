@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Game.Character;
 using Godot;
 
@@ -8,7 +9,7 @@ public partial class PlayerController : Node
 
     private Character selectedCharacter;
 
-    public override void _UnhandledInput(InputEvent @event)
+    public override async void _UnhandledInput(InputEvent @event)
     {
         if (@event.IsActionPressed("select")) {
 
@@ -16,9 +17,15 @@ public partial class PlayerController : Node
 
             if (clickedCharacter != null)
             {
-               GD.Print(clickedCharacter.Name); 
+               selectedCharacter = clickedCharacter;
+               gridManager.HighlightMovableCells(clickedCharacter);
             }
-            
+
+            if (selectedCharacter != null && clickedCharacter == null)
+            {
+                await gridManager.MoveCharacter(selectedCharacter, gridManager.GetMousePosition());
+                selectedCharacter = null;     
+            }
         }
     }
 

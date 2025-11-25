@@ -14,7 +14,7 @@ public partial class BaseLevel : Node
         gameCamera = GetNode<GameCamera>("GameCamera");
         tileMapLayer = GetNode<TileMapLayer>("%BaseTerrainLayer");
 
-        CallDeferred(nameof(SetCamera));
+        //CallDeferred(nameof(SetCamera));
         
     }
 

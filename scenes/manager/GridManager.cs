@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Game.Character;
 using Godot;
 
@@ -11,9 +13,12 @@ public partial class GridManager : Node
     private int cellSize = 16;
     private AStarGrid2D grid;
     private List<TileMapLayer> allLayers = new();
+    private Node2D highlightLayer;
 
     public override void _Ready()
     {
+        highlightLayer = GetNode<Node2D>("%HighlightLayer");
+
         InitGrid();
     }
 
@@ -48,7 +53,7 @@ public partial class GridManager : Node
     {
         foreach (var character in GetAllCharacters())
         {
-            var cell = ToVector2I(character.GlobalPosition);
+            var cell = tileMapLayer.LocalToMap(character.GlobalPosition);
             grid.SetPointSolid(cell, true);
         }
     }
@@ -97,10 +102,115 @@ public partial class GridManager : Node
             layer.GetChildren()
                 .OfType<TileMapLayer>()
                 .SelectMany(FlattenMapLayer) ?? Enumerable.Empty<TileMapLayer>()
-        );
+        ).Reverse();
 
     public List<Character> GetAllCharacters() => GetTree()
         .GetNodesInGroup("characters")
         .Cast<Character>()
         .ToList();
+
+    public async Task MoveCharacter(Character character, Vector2 targetPos)
+    {
+        if (!CanMove(character, targetPos))
+        {
+            return;
+        }
+
+        var currentCell = tileMapLayer.LocalToMap(character.GlobalPosition);
+        var targetCell = tileMapLayer.LocalToMap(targetPos);
+
+        var path = grid.GetPointPath(currentCell, targetCell, true);
+
+        grid.SetPointSolid(currentCell, false);
+        grid.SetPointSolid(targetCell, true);
+
+        await character.Move(path.Skip(1).ToList());
+    }
+
+    private bool CanMove(Character character, Vector2 targetPos)
+    {
+        return !character.HasMoved && GetMovableTiles(character)
+            .Contains(tileMapLayer.LocalToMap(GetMousePosition()));
+    }
+
+
+    public bool CanMoveToSelectedCell(Character character, Vector2 targetPosition)
+    {
+        return GetMovableTiles(character).Contains(tileMapLayer.LocalToMap(targetPosition));
+    }
+
+    public List<Vector2I> GetMovableTiles(Character character)
+    {
+        Vector2I startCell = tileMapLayer.LocalToMap(character.GlobalPosition);
+
+        Queue<Vector2I> toCheck = new();
+        List<Vector2I> result = new();
+
+        toCheck.Enqueue(startCell);
+        result.Add(startCell);
+
+        if (!character.HasMoved)
+        {
+            while(toCheck.Count > 0)
+            {
+                var current = toCheck.Dequeue();
+
+                foreach(var direction in new Vector2I[] { Vector2I.Up, Vector2I.Down, Vector2I.Left, Vector2I.Right })
+                {
+                    Vector2I next = current + direction;
+
+                    int distance = GetManhattanDistance(startCell, next);
+
+                    if (!result.Contains(next) && !grid.IsPointSolid(next) && grid.Region.HasPoint(next))
+                    {
+
+                        if (distance <= character.Speed)
+                        {
+                            result.Add(next);
+                            toCheck.Enqueue(next);
+                        }
+                    } 
+                }
+            }
+        }
+
+        result.Remove(startCell);
+
+        return result;
+    }
+
+    private int GetManhattanDistance(Vector2I a, Vector2I b)
+    {
+        return Mathf.Abs(a.X - b.X) + Mathf.Abs(a.Y - b.Y);
+    }
+
+    public void HighlightMovableCells(Character character)
+    {
+
+        ClearHighlights();
+
+        List<Vector2I> movableCells = GetMovableTiles(character);
+
+        foreach (var cell in movableCells)
+        {
+            var rect = new ColorRect
+            {
+                Color = new Color(0, 0, 1, 0.25f),
+                Size = new Vector2(cellSize, cellSize),
+                Position = tileMapLayer.MapToLocal(cell) - new Vector2(cellSize / 2, cellSize / 2),
+                ZIndex = 2,
+            };
+
+            rect.MouseFilter = Control.MouseFilterEnum.Ignore;
+
+            highlightLayer.AddChild(rect);
+        }
+    }
+
+    public void ClearHighlights()
+    {
+        highlightLayer.QueueFree();
+        highlightLayer = new Node2D();
+        AddChild(highlightLayer);
+    }
 }
