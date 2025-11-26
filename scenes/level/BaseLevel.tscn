@@ -1,23 +1,55 @@
-[gd_scene load_steps=10 format=4 uid="uid://co3180w26apr8"]
+[gd_scene load_steps=13 format=4 uid="uid://co3180w26apr8"]
 
 [ext_resource type="Script" uid="uid://cguckdxodeve5" path="res://scenes/level/BaseLevel.cs" id="1_4deii"]
 [ext_resource type="PackedScene" uid="uid://bjx85x3tcw72b" path="res://scenes/manager/GridManager.tscn" id="1_8a2ut"]
 [ext_resource type="TileSet" uid="uid://dx4gvhdt8n8wx" path="res://resources/tiles.tres" id="1_fo1pm"]
 [ext_resource type="PackedScene" uid="uid://5h81t5eeamgy" path="res://scenes/controller/PlayerController.tscn" id="3_vsy6t"]
 [ext_resource type="PackedScene" uid="uid://dqmkuh2llmqja" path="res://scenes/character/hero/Mage.tscn" id="4_p774u"]
+[ext_resource type="PackedScene" uid="uid://dvrc4yauah54l" path="res://scenes/controller/EnemyController.tscn" id="5_53232"]
 [ext_resource type="PackedScene" uid="uid://b8ot86ctcsks2" path="res://scenes/character/hero/Cleric.tscn" id="6_7pc6v"]
 [ext_resource type="PackedScene" uid="uid://cra3c44qngxn8" path="res://scenes/character/enemy/Skeleton.tscn" id="6_gpb0c"]
 [ext_resource type="PackedScene" uid="uid://wpuexcsgtmrb" path="res://scenes/character/hero/Warrior.tscn" id="8_u77fk"]
 [ext_resource type="PackedScene" uid="uid://xbw2hmx004et" path="res://scenes/GameCamera.tscn" id="8_vsy6t"]
+[ext_resource type="Texture2D" uid="uid://bkqlrahvsexsc" path="res://assets/tiles/card.png" id="10_fjnsi"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_53232"]
+texture = ExtResource("10_fjnsi")
+texture_margin_left = 3.0
+texture_margin_top = 3.0
+texture_margin_right = 3.0
+texture_margin_bottom = 2.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 16, 16)
 
 [node name="BaseLevel" type="Node"]
 script = ExtResource("1_4deii")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.163
+anchor_top = 0.867
+anchor_right = 0.163
+anchor_bottom = 0.867
+offset_left = -192.64
+offset_top = -112.24
+offset_right = -53.64
+offset_bottom = -48.2401
+grow_vertical = 0
+scale = Vector2(3, 3)
+theme_override_styles/panel = SubResource("StyleBoxTexture_53232")
 
 [node name="GridManager" parent="." node_paths=PackedStringArray("tileMapLayer") instance=ExtResource("1_8a2ut")]
 unique_name_in_owner = true
 tileMapLayer = NodePath("../YSortRoot/BaseTerrainLayer")
 
 [node name="PlayerController" parent="." node_paths=PackedStringArray("gridManager") instance=ExtResource("3_vsy6t")]
+gridManager = NodePath("../GridManager")
+
+[node name="EnemyController" parent="." node_paths=PackedStringArray("gridManager") instance=ExtResource("5_53232")]
 gridManager = NodePath("../GridManager")
 
 [node name="GameCamera" parent="." instance=ExtResource("8_vsy6t")]
@@ -61,7 +93,7 @@ tile_set = ExtResource("1_fo1pm")
 [node name="Heroes" type="Node2D" parent="YSortRoot/Characters"]
 
 [node name="Mage" parent="YSortRoot/Characters/Heroes" instance=ExtResource("4_p774u")]
-position = Vector2(-32, 16)
+position = Vector2(0, 16)
 
 [node name="Cleric" parent="YSortRoot/Characters/Heroes" instance=ExtResource("6_7pc6v")]
 z_index = 1
@@ -76,3 +108,4 @@ position = Vector2(32, -16)
 z_index = 1
 y_sort_enabled = true
 position = Vector2(64, 48)
+Team = 1

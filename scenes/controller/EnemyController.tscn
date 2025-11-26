@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvrc4yauah54l"]
+
+[ext_resource type="Script" uid="uid://c66k4exswryrx" path="res://scenes/controller/EnemyController.cs" id="1_2rerx"]
+
+[node name="EnemyController" type="Node"]
+script = ExtResource("1_2rerx")

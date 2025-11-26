@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Game.Character;
 using Godot;
 
 public partial class GridManager : Node
@@ -75,26 +74,8 @@ public partial class GridManager : Node
     public Character GetCharacterAtMousePosition()
     {    
         Vector2 mousePosition = GetMousePosition();
-        Vector2I mouseCell = ToVector2I(mousePosition);
+        Vector2I mouseCell = tileMapLayer.LocalToMap(mousePosition);
         return GetCharacterAtCell(mouseCell);
-    }
-
-    public Vector2 GetMousePosition()
-    {
-        return tileMapLayer.GetGlobalMousePosition();
-    }
-
-    public Vector2I ToVector2I(Vector2 pos)
-    {
-        return new Vector2I(
-            Mathf.FloorToInt(pos.X / cellSize),
-            Mathf.FloorToInt(pos.Y / cellSize)
-        );   
-    }
-
-    public Character GetCharacterAtCell(Vector2I cell)
-    {
-        return GetAllCharacters().FirstOrDefault(c => ToVector2I(c.Position) == cell);
     }
 
     private IEnumerable<TileMapLayer> FlattenMapLayer(TileMapLayer layer) =>
@@ -124,15 +105,15 @@ public partial class GridManager : Node
         grid.SetPointSolid(currentCell, false);
         grid.SetPointSolid(targetCell, true);
 
+        ClearHighlights();
         await character.Move(path.Skip(1).ToList());
     }
 
     private bool CanMove(Character character, Vector2 targetPos)
     {
         return !character.HasMoved && GetMovableTiles(character)
-            .Contains(tileMapLayer.LocalToMap(GetMousePosition()));
+            .Contains(tileMapLayer.LocalToMap(targetPos));
     }
-
 
     public bool CanMoveToSelectedCell(Character character, Vector2 targetPosition)
     {
@@ -141,47 +122,54 @@ public partial class GridManager : Node
 
     public List<Vector2I> GetMovableTiles(Character character)
     {
-        Vector2I startCell = tileMapLayer.LocalToMap(character.GlobalPosition);
+        var start = tileMapLayer.LocalToMap(character.GlobalPosition);
+        var reachable = new List<Vector2I>();
+        var visited = new HashSet<Vector2I>();
 
-        Queue<Vector2I> toCheck = new();
-        List<Vector2I> result = new();
+        var toVisit = new Queue<Vector2I>();
+        toVisit.Enqueue(start);
+        visited.Add(start);
 
-        toCheck.Enqueue(startCell);
-        result.Add(startCell);
-
-        if (!character.HasMoved)
+        if (character.HasMoved)
         {
-            while(toCheck.Count > 0)
+            return new List<Vector2I>();
+        }
+
+        while (toVisit.Count > 0)
+        {
+            var current = toVisit.Dequeue();
+
+            foreach (var direction in Directions4)
             {
-                var current = toCheck.Dequeue();
+                var next = current + direction;
 
-                foreach(var direction in new Vector2I[] { Vector2I.Up, Vector2I.Down, Vector2I.Left, Vector2I.Right })
+                if (IsValidMovableTile(next, start, character.Speed, visited))
                 {
-                    Vector2I next = current + direction;
-
-                    int distance = GetManhattanDistance(startCell, next);
-
-                    if (!result.Contains(next) && !grid.IsPointSolid(next) && grid.Region.HasPoint(next))
-                    {
-
-                        if (distance <= character.Speed)
-                        {
-                            result.Add(next);
-                            toCheck.Enqueue(next);
-                        }
-                    } 
+                    visited.Add(next);
+                    reachable.Add(next);
+                    toVisit.Enqueue(next);
                 }
             }
         }
 
-        result.Remove(startCell);
-
-        return result;
+        return reachable;
     }
 
-    private int GetManhattanDistance(Vector2I a, Vector2I b)
+    private bool IsValidMovableTile(Vector2I tile, Vector2I start, int maxDistance, HashSet<Vector2I> visited)
     {
-        return Mathf.Abs(a.X - b.X) + Mathf.Abs(a.Y - b.Y);
+        if (visited.Contains(tile))
+            return false;
+
+        if (!grid.Region.HasPoint(tile))
+            return false;
+
+        if (grid.IsPointSolid(tile))
+            return false;
+
+        if (GetManhattanDistance(start, tile) > maxDistance)
+            return false;
+
+        return true;
     }
 
     public void HighlightMovableCells(Character character)
@@ -198,7 +186,7 @@ public partial class GridManager : Node
                 Color = new Color(0, 0, 1, 0.25f),
                 Size = new Vector2(cellSize, cellSize),
                 Position = tileMapLayer.MapToLocal(cell) - new Vector2(cellSize / 2, cellSize / 2),
-                ZIndex = 2,
+                ZIndex = 1,
             };
 
             rect.MouseFilter = Control.MouseFilterEnum.Ignore;
@@ -213,4 +201,24 @@ public partial class GridManager : Node
         highlightLayer = new Node2D();
         AddChild(highlightLayer);
     }
+
+    public Vector2I LocalToMap(Vector2 position) => tileMapLayer.LocalToMap(position);
+    
+    public Vector2 MapToLocal(Vector2I position) => tileMapLayer.MapToLocal(position);
+    
+    public Vector2[] GetPathBetweenPoints(Vector2I current, Vector2I target) => grid.GetPointPath(current, target, true);
+
+    public Character GetCharacterAtCell(Vector2I cell) => GetAllCharacters().FirstOrDefault(c => LocalToMap(c.Position) == cell);
+
+    private int GetManhattanDistance(Vector2I a, Vector2I b) => Mathf.Abs(a.X - b.X) + Mathf.Abs(a.Y - b.Y);
+
+    public Vector2 GetMousePosition() => tileMapLayer.GetGlobalMousePosition();
+
+    private static readonly Vector2I[] Directions4 =
+    {
+        Vector2I.Up,
+        Vector2I.Down,
+        Vector2I.Left,
+        Vector2I.Right
+    };
 }

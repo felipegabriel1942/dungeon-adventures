@@ -1,4 +1,3 @@
-using Game.Character;
 using Godot;
 
 public partial class Cleric : Character

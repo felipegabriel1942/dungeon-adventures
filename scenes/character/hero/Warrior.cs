@@ -1,5 +1,4 @@
 using Godot;
-using Game.Character;
 
 public partial class Warrior : Character
 {

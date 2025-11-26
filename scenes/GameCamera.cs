@@ -9,7 +9,7 @@ public partial class GameCamera : Camera2D
 
     public override void _Process(double delta)
     {
-        GlobalPosition = GetScreenCenterPosition();
+        //GlobalPosition = GetScreenCenterPosition();
     }
 
     public void SetBoundingRect(Rect2I boundingRect)

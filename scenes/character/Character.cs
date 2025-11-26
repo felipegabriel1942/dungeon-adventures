@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
 
-namespace Game.Character;
-
 public abstract partial class Character : Node2D
 {
     [Export]
     public int Speed = 1;
+
+    [Export]
+    public TeamType Team;
 
     protected AnimatedSprite2D animatedSprite2D;
     public bool IsAttacking;

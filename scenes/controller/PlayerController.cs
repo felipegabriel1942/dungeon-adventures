@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
-using Game.Character;
 using Godot;
+
+namespace Game.Controller;
 
 public partial class PlayerController : Node
 {
