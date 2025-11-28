@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5uia0rw02ykd"]
+
+[ext_resource type="Texture2D" uid="uid://6dabeeuc2px2" path="res://assets/arrow_left.png" id="1_ko2k2"]
+
+[node name="TurnIndicator" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 4.71239
+texture = ExtResource("1_ko2k2")
+centered = false
+offset = Vector2(8, 2)

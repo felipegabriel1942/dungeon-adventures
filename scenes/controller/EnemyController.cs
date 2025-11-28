@@ -18,22 +18,25 @@ public partial class EnemyController : Node
     private async void Init()
     {
 
-        await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
-
         // TODO: Essa logica devera ser feita pelo TurnManager
-        var characters = gridManager.GetAllCharacters()
-            .Where(c => c.Team.Equals(TeamType.Enemy))
-            .ToList();
 
-        selectedCharacter = characters.FirstOrDefault();
 
-        var target = FindNearestTarget();
+        // await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
-        var targetPos = GetReachableCellClosestToTarget(selectedCharacter.GlobalPosition, target.GlobalPosition);
 
-        await gridManager.MoveCharacter(selectedCharacter, targetPos.GetValueOrDefault());
+        // var characters = gridManager.GetAllCharacters()
+        //     .Where(c => c.Team.Equals(TeamType.Enemy))
+        //     .ToList();
 
-        await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+        // selectedCharacter = characters.FirstOrDefault();
+
+        // var target = FindNearestTarget();
+
+        // var targetPos = GetReachableCellClosestToTarget(selectedCharacter.GlobalPosition, target.GlobalPosition);
+
+        // await gridManager.MoveCharacter(selectedCharacter, targetPos.GetValueOrDefault());
+
+        // await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
     }
 
     private Character FindNearestTarget()

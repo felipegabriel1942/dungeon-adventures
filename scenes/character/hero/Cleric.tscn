@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://b8ot86ctcsks2"]
+[gd_scene load_steps=11 format=3 uid="uid://b8ot86ctcsks2"]
 
 [ext_resource type="Texture2D" uid="uid://ck5ykryej4jgh" path="res://assets/characters/Cleric.png" id="1_eufvm"]
 [ext_resource type="Script" uid="uid://cjaqm4cmfy35h" path="res://scenes/character/hero/Cleric.cs" id="1_smrnq"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_u7maj"]
+[ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_wvyn4"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="3_ht767"]
 [ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="4_smrnq"]
 
@@ -45,6 +46,8 @@ top_level = true
 y_sort_enabled = true
 script = ExtResource("1_smrnq")
 Speed = 3
+
+[node name="TurnIndicator" parent="." instance=ExtResource("2_wvyn4")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 11)

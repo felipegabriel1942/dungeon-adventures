@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://cra3c44qngxn8"]
+[gd_scene load_steps=13 format=3 uid="uid://cra3c44qngxn8"]
 
 [ext_resource type="Script" uid="uid://m4u1ej55ybwh" path="res://scenes/character/enemy/Skeleton.cs" id="1_m4q1t"]
 [ext_resource type="Texture2D" uid="uid://defhp0rcn8p1v" path="res://assets/characters/Skeleton.png" id="1_xdbfw"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="2_a08e4"]
+[ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_h2w6i"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h2w6i"]
 atlas = ExtResource("1_xdbfw")
@@ -68,7 +69,10 @@ animations = [{
 
 [node name="Skeleton" type="Node2D"]
 script = ExtResource("1_m4q1t")
+Agility = 8
 Speed = 3
+
+[node name="TurnIndicator" parent="." instance=ExtResource("2_h2w6i")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_a08e4")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://wpuexcsgtmrb"]
+[gd_scene load_steps=16 format=3 uid="uid://wpuexcsgtmrb"]
 
 [ext_resource type="Script" uid="uid://bxbc0aloqabk3" path="res://scenes/character/hero/Warrior.cs" id="1_o24pb"]
 [ext_resource type="Texture2D" uid="uid://di6kcyudplpuf" path="res://assets/characters/Warrior.png" id="1_q41t4"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_xvo0l"]
+[ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_4tdtf"]
 [ext_resource type="PackedScene" uid="uid://dukb0ioeynfmm" path="res://scenes/equipment/Weapon.tscn" id="4_10y84"]
 [ext_resource type="PackedScene" uid="uid://cj2at7rklrtt7" path="res://scenes/equipment/Sword.tscn" id="5_4tdtf"]
 
@@ -79,7 +80,10 @@ animations = [{
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_o24pb")
+Agility = 12
 Speed = 4
+
+[node name="TurnIndicator" parent="." instance=ExtResource("2_4tdtf")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_xvo0l")

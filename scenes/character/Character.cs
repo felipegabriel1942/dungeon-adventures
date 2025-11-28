@@ -1,23 +1,38 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Game.Autoload;
 using Godot;
 
 public abstract partial class Character : Node2D
 {
+
+    [Export]
+    public int Agility = 10;
+
     [Export]
     public int Speed = 1;
 
     [Export]
     public TeamType Team;
 
+    private Node2D turnIndicator;
+
     protected AnimatedSprite2D animatedSprite2D;
     public bool IsAttacking;
     public bool HasMoved;
-    
+
+    public int Initiative { get; private set; }
+    public bool IsMyTurn { get; private set; }
 
     public override void _Ready()
     {
         AddToGroup("characters");
+        CalculateInitiative();
+
+        turnIndicator = GetNode<Node2D>("TurnIndicator");
+
+        GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(SetMyTurn));
     }
 
     public abstract void Attack();
@@ -31,6 +46,8 @@ public abstract partial class Character : Node2D
         {
              animatedSprite2D.Modulate = new Color(1f, 1f, 1f, 1);
         }
+
+        turnIndicator.Visible = IsMyTurn;
     }
 
     public async Task Move(List<Vector2> path)
@@ -49,6 +66,28 @@ public abstract partial class Character : Node2D
         tween.Dispose();
 
         HasMoved = true;
+        IsMyTurn = false;
+
+        GameEvents.EmitEndTurn();
+    }
+
+    public void CalculateInitiative()
+    {
+        Random random = new Random();
+        Initiative = Agility + random.Next(1, 7);
+    }
+
+    private void SetMyTurn(Character character)
+    {
+        if (character == this)
+        {
+            IsMyTurn = true;
+        }
+    }
+
+    public override string ToString()
+    {
+        return $"{{ \"name\": {this.Name}, initiative: {this.Initiative}, agility: {this.Agility}, isMyTurn: {this.IsMyTurn} }}";
     }
 
 }
