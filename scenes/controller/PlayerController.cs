@@ -15,7 +15,8 @@ public partial class PlayerController : Node
 
             var clickedCharacter = gridManager.GetCharacterAtMousePosition();
 
-            if (clickedCharacter != null)
+
+            if (clickedCharacter != null && TeamType.Hero.Equals(clickedCharacter.Team) && clickedCharacter.IsMyTurn)
             {
                selectedCharacter = clickedCharacter;
                gridManager.HighlightMovableCells(clickedCharacter);
@@ -23,10 +24,12 @@ public partial class PlayerController : Node
 
             if (selectedCharacter != null && clickedCharacter == null)
             {
-                await gridManager.MoveCharacter(selectedCharacter, gridManager.GetMousePosition());
-                selectedCharacter = null;     
+                if (gridManager.CanMove(selectedCharacter, gridManager.GetMousePosition()))
+                {
+                    await gridManager.MoveCharacter(selectedCharacter, gridManager.GetMousePosition());
+                    selectedCharacter = null;   
+                }
             }
         }
     }
-
 }

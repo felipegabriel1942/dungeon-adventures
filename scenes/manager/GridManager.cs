@@ -92,11 +92,6 @@ public partial class GridManager : Node
 
     public async Task MoveCharacter(Character character, Vector2 targetPos)
     {
-        if (!CanMove(character, targetPos))
-        {
-            return;
-        }
-
         var currentCell = tileMapLayer.LocalToMap(character.GlobalPosition);
         var targetCell = tileMapLayer.LocalToMap(targetPos);
 
@@ -109,10 +104,9 @@ public partial class GridManager : Node
         await character.Move(path.Skip(1).ToList());
     }
 
-    private bool CanMove(Character character, Vector2 targetPos)
+    public bool CanMove(Character character, Vector2 targetPos)
     {
-        return !character.HasMoved && GetMovableTiles(character)
-            .Contains(tileMapLayer.LocalToMap(targetPos));
+        return GetMovableTiles(character).Contains(tileMapLayer.LocalToMap(targetPos));
     }
 
     public bool CanMoveToSelectedCell(Character character, Vector2 targetPosition)
@@ -130,10 +124,10 @@ public partial class GridManager : Node
         toVisit.Enqueue(start);
         visited.Add(start);
 
-        if (character.HasMoved)
-        {
-            return new List<Vector2I>();
-        }
+        // if (character.HasMoved)
+        // {
+        //     return new List<Vector2I>();
+        // }
 
         while (toVisit.Count > 0)
         {
@@ -200,6 +194,28 @@ public partial class GridManager : Node
         highlightLayer.QueueFree();
         highlightLayer = new Node2D();
         AddChild(highlightLayer);
+    }
+
+    public bool IsTargetInAttackArea(Character attacker, Character target)
+    {
+        return GetCellsInCharacterAttackRange(attacker).Contains(tileMapLayer.LocalToMap(target.Position));
+    }
+
+    private List<Vector2I> GetCellsInCharacterAttackRange(Character character)
+    {
+        var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.AttackRange);
+        cells.RemoveAll(t => GetCharacterAtCell(t) == null || GetCharacterAtCell(t).Team.Equals(character.Team));
+        return cells;
+    }
+
+    private List<Vector2I> GetCellsInRange(Vector2I center, int range)
+    {
+        return (
+            from dx in Enumerable.Range(-range, range * 2 + 1)
+            from dy in Enumerable.Range(-range, range * 2 +1)
+            where Mathf.Abs(dx) + Mathf.Abs(dy) <= range
+            select center + new Vector2I(dx, dy)
+        ).ToList();
     }
 
     public Vector2I LocalToMap(Vector2 position) => tileMapLayer.LocalToMap(position);

@@ -46,6 +46,7 @@ top_level = true
 y_sort_enabled = true
 script = ExtResource("1_smrnq")
 Speed = 3
+AttackRange = 3
 
 [node name="TurnIndicator" parent="." instance=ExtResource("2_wvyn4")]
 

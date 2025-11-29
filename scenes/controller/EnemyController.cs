@@ -1,4 +1,5 @@
 using System.Linq;
+using Game.Autoload;
 using Godot;
 
 namespace Game.Controller;
@@ -8,38 +9,40 @@ public partial class EnemyController : Node
     [Export]
     private GridManager gridManager;
 
-    private Character selectedCharacter;
-
     public override void _Ready()
     {
-        CallDeferred(nameof(Init));
+        GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(ExecuteTurn));
     }
 
-    private async void Init()
+    private async void ExecuteTurn(Character character)
     {
+        if (TeamType.Enemy.Equals(character.Team)) {
+            
+            await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
-        // TODO: Essa logica devera ser feita pelo TurnManager
+            var target = FindNearestTarget(character);
 
+            if (gridManager.IsTargetInAttackArea(character, target))
+            {
+                await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
-        // await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+                // TODO: Implementar logica de combate aqui!!!!!!
+                character.Attack();
+                GD.Print("Atacou o " + target.ToString());
+            } else
+            {
+                var targetPos = GetReachableCellClosestToTarget(character, target.GlobalPosition);
 
+                await gridManager.MoveCharacter(character, targetPos.GetValueOrDefault());
+            }
 
-        // var characters = gridManager.GetAllCharacters()
-        //     .Where(c => c.Team.Equals(TeamType.Enemy))
-        //     .ToList();
-
-        // selectedCharacter = characters.FirstOrDefault();
-
-        // var target = FindNearestTarget();
-
-        // var targetPos = GetReachableCellClosestToTarget(selectedCharacter.GlobalPosition, target.GlobalPosition);
-
-        // await gridManager.MoveCharacter(selectedCharacter, targetPos.GetValueOrDefault());
-
-        // await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+            await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+        }
     }
 
-    private Character FindNearestTarget()
+    // TODO: Melhorar a logica do alvo, colocando condições, por exemplo, alvo com menos pontos de vida, tipo
+    // preferido de alvo e etc.
+    private Character FindNearestTarget(Character character)
     {
         var targets = gridManager.GetAllCharacters()
             .Where(c => c.Team == TeamType.Hero)
@@ -54,23 +57,23 @@ public partial class EnemyController : Node
             .Sort((a, b) =>
             {
                 return a.Position
-                    .DistanceTo(selectedCharacter.Position)
-                    .CompareTo(b.Position.DistanceTo(selectedCharacter.Position));
+                    .DistanceTo(character.Position)
+                    .CompareTo(b.Position.DistanceTo(character.Position));
             });
 
         return targets.First();
     }
 
-    public Vector2? GetReachableCellClosestToTarget(Vector2 current, Vector2 target)
+    public Vector2? GetReachableCellClosestToTarget(Character character, Vector2 target)
     {
-        var currentPos = gridManager.LocalToMap(current);
+        var currentPos = gridManager.LocalToMap(character.GlobalPosition);
         var targetPos = gridManager.LocalToMap(target);
 
         var path = gridManager.GetPathBetweenPoints(currentPos, targetPos)
             .Skip(1)
             .Select(gridManager.LocalToMap);
 
-        var movableTiles = gridManager.GetMovableTiles(selectedCharacter).ToHashSet();
+        var movableTiles = gridManager.GetMovableTiles(character).ToHashSet();
 
         var closest = path.LastOrDefault(movableTiles.Contains);
 

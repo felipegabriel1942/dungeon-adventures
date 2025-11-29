@@ -1,3 +1,4 @@
+using Game.Autoload;
 using Godot;
 
 public partial class Skeleton : Character
@@ -13,6 +14,8 @@ public partial class Skeleton : Character
         animatedSprite2D.Play("attack");
         animatedSprite2D.AnimationFinished += OnAttackFinished;
         IsAttacking = true;
+        IsMyTurn = false; 
+        GameEvents.EmitEndTurn();   
     }
 
     private void OnAttackFinished()

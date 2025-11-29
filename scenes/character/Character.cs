@@ -16,6 +16,9 @@ public abstract partial class Character : Node2D
     [Export]
     public TeamType Team;
 
+    [Export]
+    public int AttackRange = 1;
+
     private Node2D turnIndicator;
 
     protected AnimatedSprite2D animatedSprite2D;
@@ -23,7 +26,7 @@ public abstract partial class Character : Node2D
     public bool HasMoved;
 
     public int Initiative { get; private set; }
-    public bool IsMyTurn { get; private set; }
+    public bool IsMyTurn { get; protected set; }
 
     public override void _Ready()
     {
@@ -39,13 +42,13 @@ public abstract partial class Character : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (HasMoved)
-        {
-            animatedSprite2D.Modulate = new Color(0.5f, 0.5f, 0.5f, 1);
-        } else
-        {
-             animatedSprite2D.Modulate = new Color(1f, 1f, 1f, 1);
-        }
+        // if (HasMoved)
+        // {
+        //     animatedSprite2D.Modulate = new Color(0.5f, 0.5f, 0.5f, 1);
+        // } else
+        // {
+        //      animatedSprite2D.Modulate = new Color(1f, 1f, 1f, 1);
+        // }
 
         turnIndicator.Visible = IsMyTurn;
     }
