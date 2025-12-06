@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bmqw7prfwqeuh"
-path="res://.godot/imported/BoldPixels.ttf-3c45ab0b33f69a31c18372b4a5f54ff3.fontdata"
+uid="uid://oytdsfltcoeg"
+path="res://.godot/imported/Bitfantasy.ttf-ee5d8715cb467a6ecc549124e2b55800.fontdata"
 
 [deps]
 
-source_file="res://resources/BoldPixels.ttf"
-dest_files=["res://.godot/imported/BoldPixels.ttf-3c45ab0b33f69a31c18372b4a5f54ff3.fontdata"]
+source_file="res://resources/Bitfantasy.ttf"
+dest_files=["res://.godot/imported/Bitfantasy.ttf-ee5d8715cb467a6ecc549124e2b55800.fontdata"]
 
 [params]
 
@@ -29,13 +29,7 @@ Fallbacks=null
 fallbacks=[]
 Compress=null
 compress=true
-preload=[{
-"chars": [],
-"glyphs": [],
-"name": "Nova Configuração",
-"size": Vector2i(16, 0),
-&"variation_embolden": 0.0
-}]
+preload=[]
 language_support={}
 script_support={}
 opentype_features={}

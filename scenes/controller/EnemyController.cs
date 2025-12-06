@@ -16,7 +16,7 @@ public partial class EnemyController : Node
 
     private async void ExecuteTurn(Character character)
     {
-        if (TeamType.Enemy.Equals(character.Team)) {
+        if (TeamType.Enemy.Equals(character.resource.Team)) {
             
             await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
@@ -45,7 +45,7 @@ public partial class EnemyController : Node
     private Character FindNearestTarget(Character character)
     {
         var targets = gridManager.GetAllCharacters()
-            .Where(c => c.Team == TeamType.Hero)
+            .Where(c => c.resource.Team == TeamType.Hero)
             .ToList();
 
         if (!targets.Any())

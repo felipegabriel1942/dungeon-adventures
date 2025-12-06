@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://cs4fptlto0nos"]
+
+[ext_resource type="Script" uid="uid://fgugi0x47l8u" path="res://resources/character/CharacterResource.cs" id="1_gu0by"]
+[ext_resource type="Texture2D" uid="uid://cr0y2amdl4687" path="res://assets/characters/Warrior-Portrait.png" id="1_u7ayh"]
+
+[resource]
+script = ExtResource("1_gu0by")
+DisplayName = "Guerreiro"
+Health = 20
+Agility = 12
+Speed = 4
+AttackRange = 1
+Portrait = ExtResource("1_u7ayh")
+metadata/_custom_type_script = "uid://fgugi0x47l8u"

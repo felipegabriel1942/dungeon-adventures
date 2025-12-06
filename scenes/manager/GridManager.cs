@@ -137,7 +137,7 @@ public partial class GridManager : Node
             {
                 var next = current + direction;
 
-                if (IsValidMovableTile(next, start, character.Speed, visited))
+                if (IsValidMovableTile(next, start, character.resource.Speed, visited))
                 {
                     visited.Add(next);
                     reachable.Add(next);
@@ -203,8 +203,8 @@ public partial class GridManager : Node
 
     private List<Vector2I> GetCellsInCharacterAttackRange(Character character)
     {
-        var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.AttackRange);
-        cells.RemoveAll(t => GetCharacterAtCell(t) == null || GetCharacterAtCell(t).Team.Equals(character.Team));
+        var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.resource.AttackRange);
+        cells.RemoveAll(t => GetCharacterAtCell(t) == null || GetCharacterAtCell(t).resource.Team.Equals(character.resource.Team));
         return cells;
     }
 

@@ -1,3 +1,4 @@
+using Game.Autoload;
 using Godot;
 
 namespace Game.Controller;
@@ -15,8 +16,9 @@ public partial class PlayerController : Node
 
             var clickedCharacter = gridManager.GetCharacterAtMousePosition();
 
+            GameEvents.EmitCharacterSelectedOnGrid(clickedCharacter);
 
-            if (clickedCharacter != null && TeamType.Hero.Equals(clickedCharacter.Team) && clickedCharacter.IsMyTurn)
+            if (clickedCharacter != null && TeamType.Hero.Equals(clickedCharacter.resource.Team) && clickedCharacter.IsMyTurn)
             {
                selectedCharacter = clickedCharacter;
                gridManager.HighlightMovableCells(clickedCharacter);

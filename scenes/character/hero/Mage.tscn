@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://dqmkuh2llmqja"]
+[gd_scene load_steps=16 format=3 uid="uid://dqmkuh2llmqja"]
 
 [ext_resource type="Texture2D" uid="uid://bokf0bo43svxt" path="res://assets/characters/Mage.png" id="1_a78et"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_v54v6"]
 [ext_resource type="Script" uid="uid://csxywimq3jrjw" path="res://scenes/character/hero/Mage.cs" id="1_wt5ga"]
+[ext_resource type="Resource" uid="uid://djfx8nvhaehn5" path="res://resources/character/mage.tres" id="2_p5lce"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="4_62wif"]
 [ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="5_p5lce"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="6_62wif"]
@@ -78,9 +79,7 @@ animations = [{
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_wt5ga")
-Agility = 9
-Speed = 3
-AttackRange = 4
+resource = ExtResource("2_p5lce")
 
 [node name="TurnIndicator" parent="." instance=ExtResource("6_62wif")]
 

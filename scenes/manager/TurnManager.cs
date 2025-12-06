@@ -24,7 +24,7 @@ public partial class TurnManager : Node
     {
         var characters = gridManager.GetAllCharacters()
             .OrderByDescending(c => c.Initiative)
-            .ThenByDescending(c => c.Agility)
+            .ThenByDescending(c => c.resource.Agility)
             .ToList();
 
         foreach(var character in characters)
@@ -38,6 +38,7 @@ public partial class TurnManager : Node
     private void EndTurn()
     {
         var finished = turnOrder.Dequeue();
+        finished.EndMyTurn();
         turnOrder.Enqueue(finished);
 
         GameEvents.EmitBeginTurn(turnOrder.Peek());

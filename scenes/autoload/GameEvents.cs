@@ -13,6 +13,9 @@ public partial class GameEvents : Node
     [Signal]
     public delegate void EndTurnEventHandler();
 
+    [Signal]
+    public delegate void CharacterSelectedOnGridEventHandler(Character character);
+
     public override void _Notification(int what)
     {
         if (what == NotificationSceneInstantiated)
@@ -29,6 +32,10 @@ public partial class GameEvents : Node
     public static void EmitEndTurn()
     {
         Instance.EmitSignal(SignalName.EndTurn);
+    }
+
+    public static void EmitCharacterSelectedOnGrid(Character character) {
+        Instance.EmitSignal(SignalName.CharacterSelectedOnGrid, character);
     }
 
 }

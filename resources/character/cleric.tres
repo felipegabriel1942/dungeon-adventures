@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="CharacterResource" load_steps=3 format=3 uid="uid://b501m73kr2tve"]
+
+[ext_resource type="Texture2D" uid="uid://s5bjp2mdccy0" path="res://assets/characters/Cleric-Portrait.png" id="1_tb2po"]
+[ext_resource type="Script" uid="uid://fgugi0x47l8u" path="res://resources/character/CharacterResource.cs" id="1_vaala"]
+
+[resource]
+script = ExtResource("1_vaala")
+DisplayName = "Clérigo"
+Health = 15
+Agility = 10
+Speed = 3
+AttackRange = 3
+Portrait = ExtResource("1_tb2po")
+metadata/_custom_type_script = "uid://fgugi0x47l8u"

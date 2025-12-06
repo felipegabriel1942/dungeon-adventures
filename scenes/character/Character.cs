@@ -2,22 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Autoload;
+using Game.Resources.Character;
 using Godot;
 
 public abstract partial class Character : Node2D
 {
 
     [Export]
-    public int Agility = 10;
-
-    [Export]
-    public int Speed = 1;
-
-    [Export]
-    public TeamType Team;
-
-    [Export]
-    public int AttackRange = 1;
+    public CharacterResource resource { get; private set; }
 
     private Node2D turnIndicator;
 
@@ -69,15 +61,20 @@ public abstract partial class Character : Node2D
         tween.Dispose();
 
         HasMoved = true;
-        IsMyTurn = false;
+        
+        // TODO: Verificar se esse trecho de codigo pode ir para o enemy controller
+        if (resource.Team.Equals(TeamType.Enemy))
+        {
+            IsMyTurn = false;
 
-        GameEvents.EmitEndTurn();
+            GameEvents.EmitEndTurn();
+        }
     }
 
     public void CalculateInitiative()
     {
         Random random = new Random();
-        Initiative = Agility + random.Next(1, 7);
+        Initiative = resource.Agility + random.Next(1, 7);
     }
 
     private void SetMyTurn(Character character)
@@ -88,9 +85,14 @@ public abstract partial class Character : Node2D
         }
     }
 
+    public void EndMyTurn()
+    {
+        IsMyTurn = false;
+    }
+
     public override string ToString()
     {
-        return $"{{ \"name\": {this.Name}, initiative: {this.Initiative}, agility: {this.Agility}, isMyTurn: {this.IsMyTurn} }}";
+        return $"{{ \"name\": {this.Name}, initiative: {this.Initiative}, agility: {this.resource.Agility}, isMyTurn: {this.IsMyTurn} }}";
     }
 
 }
