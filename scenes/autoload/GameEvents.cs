@@ -1,3 +1,4 @@
+using Game.Enum;
 using Godot;
 
 namespace Game.Autoload;
@@ -15,6 +16,9 @@ public partial class GameEvents : Node
 
     [Signal]
     public delegate void CharacterSelectedOnGridEventHandler(Character character);
+
+    [Signal]
+    public delegate void PlayerStateChangeEventHandler(PlayerStates state);
 
     public override void _Notification(int what)
     {
@@ -36,6 +40,11 @@ public partial class GameEvents : Node
 
     public static void EmitCharacterSelectedOnGrid(Character character) {
         Instance.EmitSignal(SignalName.CharacterSelectedOnGrid, character);
+    }
+
+    public static void EmitPlayerStateChanged(int newState)
+    {
+        Instance.EmitSignal(SignalName.PlayerStateChange, newState);
     }
 
 }

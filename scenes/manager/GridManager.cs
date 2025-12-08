@@ -104,7 +104,7 @@ public partial class GridManager : Node
         await character.Move(path.Skip(1).ToList());
     }
 
-    public bool CanMove(Character character, Vector2 targetPos)
+    public bool CanMoveToTargetPosition(Character character, Vector2 targetPos)
     {
         return GetMovableTiles(character).Contains(tileMapLayer.LocalToMap(targetPos));
     }
@@ -229,6 +229,8 @@ public partial class GridManager : Node
     private int GetManhattanDistance(Vector2I a, Vector2I b) => Mathf.Abs(a.X - b.X) + Mathf.Abs(a.Y - b.Y);
 
     public Vector2 GetMousePosition() => tileMapLayer.GetGlobalMousePosition();
+
+    public Vector2I GetMouseGridCellPosition() => LocalToMap(GetMousePosition());
 
     private static readonly Vector2I[] Directions4 =
     {

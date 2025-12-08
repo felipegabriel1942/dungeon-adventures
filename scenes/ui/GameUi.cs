@@ -1,5 +1,6 @@
 
 using Game.Autoload;
+using Game.Enum;
 using Game.Resources.Character;
 
 using Godot;
@@ -17,25 +18,24 @@ public partial class GameUi : CanvasLayer
 
     private Button attackButton;
 
-    private Button endturnButton;
+    private Button endTurnButton;
 
     private VBoxContainer heroSectionContainer;
 
     private PanelContainer actionsMenu;
 
-
     public override void _Ready()
     {
         attackButton = GetNode<Button>("%AttackButton");
-        endturnButton = GetNode<Button>("%EndTurnButton");
+        endTurnButton = GetNode<Button>("%EndTurnButton");
         heroSectionContainer = GetNode<VBoxContainer>("%HeroSectionContainer");
         actionsMenu = GetNode<PanelContainer>("%ActionsMenuContainer");
 
         CreateHeroesSection();
 
-        endturnButton.Pressed += OnEndTurnButtonClicked;
-        GameEvents.Instance.Connect(GameEvents.SignalName.CharacterSelectedOnGrid, Callable.From<Character>(OnCharacterSelected));
-    
+        endTurnButton.Pressed += OnEndTurnButtonClicked;
+        // GameEvents.Instance.Connect(GameEvents.SignalName.CharacterSelectedOnGrid, Callable.From<Character>(OnCharacterSelected));
+        GameEvents.Instance.Connect(GameEvents.SignalName.PlayerStateChange, Callable.From<PlayerStates>(OnPlayerStateChanged));
     }
 
     private void OnEndTurnButtonClicked()
@@ -53,29 +53,20 @@ public partial class GameUi : CanvasLayer
         }
     }
 
-    private void OnCharacterSelected(Character character)
+
+    private void OnPlayerStateChanged(PlayerStates newState)
     {
-        if (character != null)
+        switch (newState)
         {
-            // characterSheet.Visible = true;
-
-            if (character.resource.Team.Equals(TeamType.Hero))
-            {
+            case PlayerStates.SELECT_MOVE:
                 actionsMenu.Visible = true;
-            }
-
-            if (character.resource.Team.Equals(TeamType.Enemy))
-            {
+                break;
+            case PlayerStates.END_TURN:
+                actionsMenu.Visible = true;
+                break;
+            default:
                 actionsMenu.Visible = false;
-            }
-        } else
-        {
-            // characterSheet.Visible = false;
-            actionsMenu.Visible = false;
+                break;
         }
-
-        GD.Print(character);
     }
-
-
 }
