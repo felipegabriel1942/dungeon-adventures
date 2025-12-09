@@ -24,6 +24,8 @@ public partial class GameUi : CanvasLayer
 
     private PanelContainer actionsMenu;
 
+
+
     public override void _Ready()
     {
         attackButton = GetNode<Button>("%AttackButton");
@@ -33,10 +35,26 @@ public partial class GameUi : CanvasLayer
 
         CreateHeroesSection();
 
+        attackButton.MouseEntered += OnMouseEnter;
+        attackButton.MouseExited += OnMouseExit;
+
+        endTurnButton.MouseEntered += OnMouseEnter;
+        endTurnButton.MouseExited += OnMouseExit;
+
         endTurnButton.Pressed += OnEndTurnButtonClicked;
-        // GameEvents.Instance.Connect(GameEvents.SignalName.CharacterSelectedOnGrid, Callable.From<Character>(OnCharacterSelected));
         GameEvents.Instance.Connect(GameEvents.SignalName.PlayerStateChange, Callable.From<PlayerStates>(OnPlayerStateChanged));
     }
+
+    private void OnMouseEnter()
+    {
+        Cursor.SetCursor((Texture2D)GD.Load("res://assets/cursor-button.png"));
+    }
+
+    private void OnMouseExit()
+    {
+        Cursor.SetCursor((Texture2D)GD.Load("res://assets/cursor.png"));
+    }
+
 
     private void OnEndTurnButtonClicked()
     {

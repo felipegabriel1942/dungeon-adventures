@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://b41dcpe8btgaq" path="res://assets/panel-4.png" id="1_xy7ed"]
 [ext_resource type="Texture2D" uid="uid://cr0y2amdl4687" path="res://assets/characters/Warrior-Portrait.png" id="2_xvnl4"]
 [ext_resource type="Script" uid="uid://cbp15yfk47g4m" path="res://scenes/ui/HeroSection.cs" id="2_xy7ed"]
-[ext_resource type="Texture2D" uid="uid://bhulhuryf1l8u" path="res://assets/heart-icon.png" id="4_w6fuy"]
+[ext_resource type="Texture2D" uid="uid://dlwt23j2jup3w" path="res://assets/heart-icon-v2.png" id="5_xy7ed"]
 [ext_resource type="FontFile" uid="uid://oytdsfltcoeg" path="res://resources/Bitfantasy.ttf" id="6_xvnl4"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jwej7"]
@@ -66,8 +66,8 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 layout_mode = 2
-texture = ExtResource("4_w6fuy")
-expand_mode = 2
+texture = ExtResource("5_xy7ed")
+stretch_mode = 4
 
 [node name="HeroHealthLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2/HBoxContainer"]
 unique_name_in_owner = true
