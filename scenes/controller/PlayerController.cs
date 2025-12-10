@@ -9,46 +9,82 @@ public partial class PlayerController : Node
 
     private readonly StringName ACTION_LEFT_CLICK = "select";
 
+    private readonly StringName CANCEL_ACTION = "cancel";
+
     [Export]
     private GridManager gridManager;
 
-    private Character selectedCharacter;
+    private Character characterOnTurn;
 
     private Character hoveredCharacter;
 
-    private PlayerStates currentState;
+    private PlayerState currentState;
 
     public override void _Ready()
     {
+        GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(OnCharacterTurnBegin));
         GameEvents.Instance.Connect(GameEvents.SignalName.EndTurn, Callable.From(OnCharacterTurnEnded));
+        GameEvents.Instance.Connect(GameEvents.SignalName.AttackButtonPressed, Callable.From(OnAttackButtonPressed));
+        GameEvents.Instance.Connect(GameEvents.SignalName.MoveButtonPressed, Callable.From(OnMoveButtonPressed));
+    }
+
+    private void OnMoveButtonPressed()
+    {
+        if (!characterOnTurn.HasMoved)
+        {
+            ChangeState(PlayerState.SELECT_MOVE);
+        }
+    }
+
+    private void OnCharacterTurnBegin(Character character)
+    {
+        ChangeState(PlayerState.IDLE);
+        characterOnTurn = character;
+    }
+
+    private void OnAttackButtonPressed()
+    {
+        if (!characterOnTurn.HasAttacked)
+        {
+            ChangeState(PlayerState.SELECT_TARGET);
+        }
     }
 
     public override async void _UnhandledInput(InputEvent evt)
     {
         switch(currentState)
         {
-            case PlayerStates.IDLE:
+            case PlayerState.SELECT_MOVE:
                 if (evt.IsActionPressed(ACTION_LEFT_CLICK))
                 {
-                     GameEvents.EmitCharacterSelectedOnGrid(hoveredCharacter);
-
-                    if (hoveredCharacter != null && hoveredCharacter.resource.Team.Equals(TeamType.Hero) && hoveredCharacter.IsMyTurn)
-                    {
-                        ChangeState(PlayerStates.SELECT_MOVE);
-                        selectedCharacter = hoveredCharacter;
-                    }
-                }
-                break;
-            case PlayerStates.SELECT_MOVE:
-                if (evt.IsActionPressed(ACTION_LEFT_CLICK))
-                {
-                    if (gridManager.CanMoveToTargetPosition(selectedCharacter, gridManager.GetMousePosition()))
+                    if (gridManager.CanMoveToTargetPosition(characterOnTurn, gridManager.GetMousePosition()))
                     {
                         MoveCharacter();
                     }
                 }
+
+                if (evt.IsActionPressed(CANCEL_ACTION))
+                {
+                    gridManager.ClearHighlights();
+                    ChangeState(PlayerState.IDLE);
+                }
+
                 break;
-            case PlayerStates.MOVING:
+            case PlayerState.SELECT_TARGET:
+                if (evt.IsActionPressed(CANCEL_ACTION))
+                {
+                    gridManager.ClearHighlights();
+                    ChangeState(PlayerState.IDLE);
+                } else if (evt.IsActionPressed(ACTION_LEFT_CLICK))
+                {             
+                    if (hoveredCharacter != null)
+                    {
+                        characterOnTurn.Attack(hoveredCharacter);
+                        gridManager.ClearHighlights();
+                        ChangeState(PlayerState.IDLE);
+                    }
+                }
+                
                 break;
             default:
                 break;
@@ -57,36 +93,37 @@ public partial class PlayerController : Node
 
     public override void _Process(double delta)
     {
+        hoveredCharacter = gridManager.GetCharacterAtCell(gridManager.GetMouseGridCellPosition());
+
         switch (currentState)
         {
-            case PlayerStates.IDLE:
-                hoveredCharacter = gridManager.GetCharacterAtCell(gridManager.GetMouseGridCellPosition());
+            case PlayerState.SELECT_MOVE:
+                gridManager.HighlightMovableCells(characterOnTurn);
                 break;
-            case PlayerStates.SELECT_MOVE:
-                gridManager.HighlightMovableCells(selectedCharacter);
-                break;
-            case PlayerStates.END_TURN:
-                selectedCharacter = null;
+            case PlayerState.SELECT_TARGET:
+                gridManager.HighlightAttackArea(characterOnTurn);
                 break;
         }
     }
 
     private async void MoveCharacter()
     {
-        ChangeState(PlayerStates.MOVING);
+        ChangeState(PlayerState.MOVING);
 
-        await gridManager.MoveCharacter(selectedCharacter, gridManager.GetMousePosition());
+        await gridManager.MoveCharacter(characterOnTurn, gridManager.GetMousePosition());
     
-        ChangeState(PlayerStates.END_TURN);
+        ChangeState(PlayerState.IDLE);
     }
 
     private void OnCharacterTurnEnded()
     {
+        ChangeState(PlayerState.END_TURN);
         gridManager.ClearHighlights();
-        ChangeState(PlayerStates.IDLE);
+        characterOnTurn.HasMoved = false;
+        characterOnTurn = null;
     }
 
-    private void ChangeState(PlayerStates state)
+    private void ChangeState(PlayerState state)
     {
         currentState = state;
 

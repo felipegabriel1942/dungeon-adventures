@@ -10,11 +10,12 @@ public partial class Skeleton : Character
         base._Ready();
     }
 
-    public override void Attack()
+    public override void Attack(Character target)
     {
         animatedSprite2D.Play("attack");
         IsAttacking = true;
         IsMyTurn = false; 
+        target.TakeDamage(CalculateDamage(target));
         GameEvents.EmitEndTurn();   
     }
 
@@ -32,4 +33,9 @@ public partial class Skeleton : Character
         animatedSprite2D.Play("idle");
     }
 
+    protected override void Die()
+    {
+        GD.Print($"{this.resource.DisplayName} dies.");
+        QueueFree();
+    }
 }

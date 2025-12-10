@@ -1,7 +1,7 @@
 
 namespace Game.Enum;
 
-public enum PlayerStates
+public enum PlayerState
 {
     IDLE,
     SELECT_MOVE,

@@ -189,6 +189,29 @@ public partial class GridManager : Node
         }
     }
 
+    public void HighlightAttackArea(Character character)
+    {
+        ClearHighlights();
+
+        var attackableCells = GetCellsInCharacterAttackRange(character);
+        
+        foreach(var cell in attackableCells)
+        {
+            var rect = new ColorRect
+            {
+                Color = new Color(1, 0, 0, 0.4f),
+                Size = new Vector2(cellSize, cellSize),
+                Position = tileMapLayer.MapToLocal(cell) - new Vector2(cellSize / 2, cellSize / 2),
+                ZIndex = 1,
+            };
+
+            rect.MouseFilter = Control.MouseFilterEnum.Ignore;
+
+            highlightLayer.AddChild(rect);
+        }
+
+    }
+
     public void ClearHighlights()
     {
         highlightLayer.QueueFree();
@@ -204,7 +227,7 @@ public partial class GridManager : Node
     private List<Vector2I> GetCellsInCharacterAttackRange(Character character)
     {
         var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.resource.AttackRange);
-        cells.RemoveAll(t => GetCharacterAtCell(t) == null || GetCharacterAtCell(t).resource.Team.Equals(character.resource.Team));
+        cells.RemoveAll(t => GetCharacterAtCell(t) == character || !GetCellCustomData(t, "is_walkable").Item2);
         return cells;
     }
 
@@ -231,6 +254,11 @@ public partial class GridManager : Node
     public Vector2 GetMousePosition() => tileMapLayer.GetGlobalMousePosition();
 
     public Vector2I GetMouseGridCellPosition() => LocalToMap(GetMousePosition());
+
+    public void HighlightCellsOnAttackRange()
+    {
+        GD.Print("Selecionando quem atacar");
+    }
 
     private static readonly Vector2I[] Directions4 =
     {

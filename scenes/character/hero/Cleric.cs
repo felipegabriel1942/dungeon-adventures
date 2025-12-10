@@ -11,7 +11,7 @@ public partial class Cleric : Character
         base._Ready();
     }
 
-    public override void Attack()
+    public override void Attack(Character target)
     {
         animatedSprite2D.Play("attack");
         magic.Visible = true;
@@ -26,4 +26,8 @@ public partial class Cleric : Character
         animatedSprite2D.Play("idle");
     }
 
+    protected override void Die()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -16,9 +16,12 @@ public abstract partial class Character : Node2D
     protected AnimatedSprite2D animatedSprite2D;
     public bool IsAttacking;
     public bool HasMoved;
+    public bool HasAttacked;
 
     public int Initiative { get; private set; }
     public bool IsMyTurn { get; protected set; }
+
+    public int CurrentHealth;
 
     public override void _Ready()
     {
@@ -27,10 +30,12 @@ public abstract partial class Character : Node2D
 
         turnIndicator = GetNode<Node2D>("TurnIndicator");
 
+        CurrentHealth = resource.Health;
+
         GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(SetMyTurn));
     }
 
-    public abstract void Attack();
+    public abstract void Attack(Character target);
 
     public override void _PhysicsProcess(double delta)
     {
@@ -73,8 +78,7 @@ public abstract partial class Character : Node2D
 
     public void CalculateInitiative()
     {
-        Random random = new Random();
-        Initiative = resource.Agility + random.Next(1, 7);
+        Initiative = resource.Agility + Dice.Roll();
     }
 
     private void SetMyTurn(Character character)
@@ -92,7 +96,37 @@ public abstract partial class Character : Node2D
 
     public override string ToString()
     {
-        return $"{{ \"name\": {this.Name}, initiative: {this.Initiative}, agility: {this.resource.Agility}, isMyTurn: {this.IsMyTurn} }}";
+        return $"{{ \"name\": {this.Name}, \"currentHealht\": {this.CurrentHealth}, initiative: {this.Initiative}, agility: {this.resource.Agility}, isMyTurn: {this.IsMyTurn} }}";
     }
 
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth -= damage;
+
+        if (CurrentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    protected abstract void Die();
+
+    protected int CalculateDamage(Character target)
+    {
+        var attackerRoll = this.resource.Attack + Dice.Roll();
+        var defenseRoll = target.resource.Defense + Dice.Roll();
+        var damage =  attackerRoll - defenseRoll;
+
+        GD.Print($"{this.resource.DisplayName} rolls an {attackerRoll} for attack and {target.resource.DisplayName} rolls {defenseRoll} for defense.");
+
+        if (damage <= 0)
+        {
+            GD.Print($"{this.resource.DisplayName} misses attack.");
+        } else
+        {
+            GD.Print($"{target.resource.DisplayName} suffer {damage} points of damage.");
+        }
+
+        return damage < 0 ? 0 : damage;
+    }
 }

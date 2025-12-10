@@ -90,4 +90,4 @@ position = Vector2(32, -16)
 [node name="Skeleton" parent="YSortRoot/Characters/Enemies" instance=ExtResource("6_gpb0c")]
 z_index = 1
 y_sort_enabled = true
-position = Vector2(64, 48)
+position = Vector2(32, 0)

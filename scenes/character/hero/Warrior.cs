@@ -11,12 +11,14 @@ public partial class Warrior : Character
         base._Ready();
     }
 
-    public override void Attack()
+    public override void Attack(Character target)
     {
+        HasAttacked = true;
         animatedSprite2D.Play("attack");
         weapon.Visible = true;
         IsAttacking = true;
         weapon.Attack();
+        target.TakeDamage(CalculateDamage(target));
         weapon.AttackFinished += OnAttackFinished;
     }
 
@@ -25,4 +27,10 @@ public partial class Warrior : Character
         IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
+
+    protected override void Die()
+    {
+        throw new System.NotImplementedException();
+    }
+
 }

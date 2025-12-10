@@ -27,7 +27,7 @@ public partial class EnemyController : Node
                 await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
                 // TODO: Implementar logica de combate aqui!!!!!!
-                character.Attack();
+                character.Attack(target);
                 GD.Print("Atacou o " + target.ToString());
             } else
             {

@@ -35,11 +35,13 @@ public partial class TurnManager : Node
         GameEvents.EmitBeginTurn(turnOrder.Peek());
     }
 
-    private void EndTurn()
+    private async void EndTurn()
     {
         var finished = turnOrder.Dequeue();
         finished.EndMyTurn();
         turnOrder.Enqueue(finished);
+
+        await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
         GameEvents.EmitBeginTurn(turnOrder.Peek());
     } 

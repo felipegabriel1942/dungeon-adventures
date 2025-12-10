@@ -12,12 +12,13 @@ public partial class Mage : Character
         base._Ready();
     }
 
-    public override void Attack()
+    public override void Attack(Character target)
     {
         animatedSprite2D.Play("attack");
         magic.Visible = true;
         IsAttacking = true;
         magic.Attack();
+        target.TakeDamage(CalculateDamage(target));
         magic.MagicFinished += OnAttackFinished;
     }
 
@@ -26,4 +27,11 @@ public partial class Mage : Character
         IsAttacking = false;
         animatedSprite2D.Play("idle");
     }
+
+    protected override void Die()
+    {
+        throw new System.NotImplementedException();
+    }
+    
+
 }

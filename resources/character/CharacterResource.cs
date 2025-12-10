@@ -19,6 +19,12 @@ public partial class CharacterResource : Resource
     public int Speed { get; private set; }
 
     [Export]
+    public int Attack { get; private set; }
+
+    [Export]
+    public int Defense { get; private set; }
+
+    [Export]
     public int AttackRange { get; private set; }
 
     [Export]

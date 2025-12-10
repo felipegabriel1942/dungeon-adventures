@@ -18,7 +18,13 @@ public partial class GameEvents : Node
     public delegate void CharacterSelectedOnGridEventHandler(Character character);
 
     [Signal]
-    public delegate void PlayerStateChangeEventHandler(PlayerStates state);
+    public delegate void PlayerStateChangeEventHandler(PlayerState state);
+
+    [Signal]
+    public delegate void AttackButtonPressedEventHandler();
+
+        [Signal]
+    public delegate void MoveButtonPressedEventHandler();
 
     public override void _Notification(int what)
     {
@@ -47,4 +53,13 @@ public partial class GameEvents : Node
         Instance.EmitSignal(SignalName.PlayerStateChange, newState);
     }
 
+    public static void EmitAttackButtonPressed()
+    {
+        Instance.EmitSignal(SignalName.AttackButtonPressed);
+    }
+
+    public static void EmitMoveButtonPressed()
+    {
+        Instance.EmitSignal(SignalName.MoveButtonPressed);
+    }
 }

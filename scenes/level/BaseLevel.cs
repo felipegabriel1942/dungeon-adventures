@@ -1,3 +1,4 @@
+using System.Linq;
 using Game;
 using Game.UI;
 using Godot;
@@ -16,11 +17,6 @@ public partial class BaseLevel : Node
         gameCamera = GetNode<GameCamera>("GameCamera");
         tileMapLayer = GetNode<TileMapLayer>("%BaseTerrainLayer");
         gameUi = GetNode<GameUi>("%GameUI");        
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        
     }
 
     private void SetCamera()

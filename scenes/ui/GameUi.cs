@@ -1,4 +1,3 @@
-
 using Game.Autoload;
 using Game.Enum;
 using Game.Resources.Character;
@@ -16,6 +15,8 @@ public partial class GameUi : CanvasLayer
     [Export]
     private PackedScene heroSectionScene;
 
+    private Button moveButton;
+
     private Button attackButton;
 
     private Button endTurnButton;
@@ -24,12 +25,15 @@ public partial class GameUi : CanvasLayer
 
     private PanelContainer actionsMenu;
 
+    private PlayerState currentPlayerState;
 
+    private Character currentCharacter;
 
     public override void _Ready()
     {
         attackButton = GetNode<Button>("%AttackButton");
         endTurnButton = GetNode<Button>("%EndTurnButton");
+        moveButton = GetNode<Button>("%MoveButton");
         heroSectionContainer = GetNode<VBoxContainer>("%HeroSectionContainer");
         actionsMenu = GetNode<PanelContainer>("%ActionsMenuContainer");
 
@@ -38,11 +42,33 @@ public partial class GameUi : CanvasLayer
         attackButton.MouseEntered += OnMouseEnter;
         attackButton.MouseExited += OnMouseExit;
 
+        moveButton.MouseEntered += OnMouseEnter;
+        moveButton.MouseExited += OnMouseExit;
+
         endTurnButton.MouseEntered += OnMouseEnter;
         endTurnButton.MouseExited += OnMouseExit;
 
         endTurnButton.Pressed += OnEndTurnButtonClicked;
-        GameEvents.Instance.Connect(GameEvents.SignalName.PlayerStateChange, Callable.From<PlayerStates>(OnPlayerStateChanged));
+        attackButton.Pressed += OnAttackButtonPressed;
+        moveButton.Pressed += OnMoveButtonPressed;
+
+        GameEvents.Instance.Connect(GameEvents.SignalName.PlayerStateChange, Callable.From<PlayerState>(OnPlayerStateChanged));
+        GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(OnTurnBegin));
+    }
+
+    private void OnTurnBegin(Character character)
+    {
+        currentCharacter = character;
+    }
+
+    private void OnMoveButtonPressed()
+    {
+        GameEvents.EmitMoveButtonPressed();
+    }
+
+    private void OnAttackButtonPressed()
+    {
+        GameEvents.EmitAttackButtonPressed();   
     }
 
     private void OnMouseEnter()
@@ -54,7 +80,6 @@ public partial class GameUi : CanvasLayer
     {
         Cursor.SetCursor((Texture2D)GD.Load("res://assets/cursor.png"));
     }
-
 
     private void OnEndTurnButtonClicked()
     {
@@ -71,20 +96,31 @@ public partial class GameUi : CanvasLayer
         }
     }
 
-
-    private void OnPlayerStateChanged(PlayerStates newState)
+    public override void _Process(double delta)
     {
-        switch (newState)
+
+        attackButton.Disabled = currentCharacter.HasAttacked;
+        moveButton.Disabled = currentCharacter.HasMoved;
+
+        switch (currentPlayerState)
         {
-            case PlayerStates.SELECT_MOVE:
-                actionsMenu.Visible = true;
+            case PlayerState.IDLE:
+                actionsMenu.Visible = currentCharacter.resource.Team.Equals(TeamType.Hero);
                 break;
-            case PlayerStates.END_TURN:
-                actionsMenu.Visible = true;
+            case PlayerState.SELECT_MOVE:
+                actionsMenu.Visible = false;
+                break;
+            case PlayerState.END_TURN:
+                actionsMenu.Visible = false;
                 break;
             default:
                 actionsMenu.Visible = false;
                 break;
         }
+    }
+
+    private void OnPlayerStateChanged(PlayerState newState)
+    {
+        currentPlayerState = newState;
     }
 }
