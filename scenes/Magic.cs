@@ -7,27 +7,23 @@ public partial class Magic : Node2D
     public delegate void MagicFinishedEventHandler();
 
     [Export]
-    private PackedScene magicScene;
+    private PackedScene ProjectileScene;
 
-    private AnimatedSprite2D animatedSprite2D;
+    private Projectile projectile;
 
-        public void Attack()
+    public void Attack()
     {
-        if (magicScene != null)
+        if (ProjectileScene != null)
         {
-           animatedSprite2D = magicScene.Instantiate<AnimatedSprite2D>();
-           AddChild(animatedSprite2D);
-           animatedSprite2D.Centered = false;
-           animatedSprite2D.Offset = new Vector2(-8, -23);
-           animatedSprite2D.Play("attack");
-           animatedSprite2D.AnimationFinished += OnMagicAnimationFinished;
+           projectile = ProjectileScene.Instantiate<Projectile>();
+           AddChild(projectile);
         }
     }
 
     private void OnMagicAnimationFinished()
     {
-        EmitSignal(SignalName.MagicFinished);
-        RemoveChild(animatedSprite2D);
+        // EmitSignal(SignalName.MagicFinished);
+        // RemoveChild(projectile);
     }
 
 }

@@ -1,10 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://cra3c44qngxn8"]
+[gd_scene load_steps=17 format=3 uid="uid://cra3c44qngxn8"]
 
 [ext_resource type="Script" uid="uid://m4u1ej55ybwh" path="res://scenes/character/enemy/Skeleton.cs" id="1_m4q1t"]
 [ext_resource type="Texture2D" uid="uid://defhp0rcn8p1v" path="res://assets/characters/Skeleton.png" id="1_xdbfw"]
 [ext_resource type="Resource" uid="uid://b2rpqr2l0hgjl" path="res://resources/character/skeleton.tres" id="2_3cs15"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="2_a08e4"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_h2w6i"]
+[ext_resource type="Texture2D" uid="uid://bc3kwrlwkyqt4" path="res://assets/healthbar.png" id="6_5gx4p"]
+[ext_resource type="Texture2D" uid="uid://iobewyc73qqc" path="res://assets/life.png" id="7_f1edn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h2w6i"]
 atlas = ExtResource("1_xdbfw")
@@ -68,16 +70,20 @@ animations = [{
 "speed": 3.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5gx4p"]
+size = Vector2(4, 13)
+
 [node name="Skeleton" type="Node2D"]
 script = ExtResource("1_m4q1t")
 resource = ExtResource("2_3cs15")
 
 [node name="TurnIndicator" parent="." instance=ExtResource("2_h2w6i")]
+position = Vector2(0, -4)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_a08e4")
 centered = false
-offset = Vector2(0, -4)
+offset = Vector2(0, -5)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h2w6i")
@@ -85,4 +91,21 @@ animation = &"attack"
 autoplay = "idle"
 frame = 4
 frame_progress = 1.0
-offset = Vector2(8, -6)
+offset = Vector2(8, -8)
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+visible = false
+offset_left = 2.0
+offset_top = -14.0
+offset_right = 18.0
+offset_bottom = 2.0
+scale = Vector2(0.8, 0.5)
+value = 100.0
+texture_under = ExtResource("6_5gx4p")
+texture_progress = ExtResource("7_f1edn")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(8, 1.5)
+shape = SubResource("RectangleShape2D_5gx4p")

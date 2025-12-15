@@ -88,7 +88,7 @@ resource = ExtResource("2_xyvlm")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_xvo0l")
 centered = false
-offset = Vector2(0, -4)
+offset = Vector2(0, -8)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -99,7 +99,7 @@ autoplay = "idle"
 frame = 3
 frame_progress = 1.0
 centered = false
-offset = Vector2(0, -5)
+offset = Vector2(0, -8)
 
 [node name="Weapon" parent="." instance=ExtResource("4_10y84")]
 unique_name_in_owner = true

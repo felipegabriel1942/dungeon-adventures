@@ -228,6 +228,7 @@ public partial class GridManager : Node
     {
         var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.resource.AttackRange);
         cells.RemoveAll(t => GetCharacterAtCell(t) == character || !GetCellCustomData(t, "is_walkable").Item2);
+        // cells.RemoveAll(t => tileMapLayer.LocalToMap(character.GlobalPosition).X != t.X &&  tileMapLayer.LocalToMap(character.GlobalPosition).Y != t.Y);
         return cells;
     }
 

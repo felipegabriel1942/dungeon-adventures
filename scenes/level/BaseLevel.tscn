@@ -34,7 +34,7 @@ gridManager = NodePath("../GridManager")
 
 [node name="GameUI" parent="." instance=ExtResource("7_8dj5a")]
 unique_name_in_owner = true
-heroesResources = Array[Object]([ExtResource("8_udnuu"), ExtResource("10_e0ssp"), ExtResource("9_h7x3t")])
+heroesResources = Array[Object]([ExtResource("8_udnuu"), ExtResource("9_h7x3t"), ExtResource("10_e0ssp")])
 
 [node name="GameCamera" parent="." instance=ExtResource("8_vsy6t")]
 zoom = Vector2(3, 3)
@@ -91,3 +91,6 @@ position = Vector2(32, -16)
 z_index = 1
 y_sort_enabled = true
 position = Vector2(32, 0)
+
+[node name="Skeleton2" parent="YSortRoot/Characters/Enemies" instance=ExtResource("6_gpb0c")]
+position = Vector2(-64, 0)

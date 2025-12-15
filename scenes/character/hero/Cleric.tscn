@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8ot86ctcsks2"]
+[gd_scene load_steps=11 format=3 uid="uid://b8ot86ctcsks2"]
 
 [ext_resource type="Texture2D" uid="uid://ck5ykryej4jgh" path="res://assets/characters/Cleric.png" id="1_eufvm"]
 [ext_resource type="Script" uid="uid://cjaqm4cmfy35h" path="res://scenes/character/hero/Cleric.cs" id="1_smrnq"]
@@ -6,7 +6,6 @@
 [ext_resource type="Resource" uid="uid://b501m73kr2tve" path="res://resources/character/cleric.tres" id="2_58cqp"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_wvyn4"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="3_ht767"]
-[ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="4_smrnq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_smrnq"]
 atlas = ExtResource("1_eufvm")
@@ -52,7 +51,7 @@ resource = ExtResource("2_58cqp")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(8, 11)
 texture = ExtResource("1_u7maj")
-offset = Vector2(0, -7)
+offset = Vector2(0, -8)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -62,8 +61,7 @@ sprite_frames = SubResource("SpriteFrames_ht767")
 animation = &"idle"
 autoplay = "idle"
 centered = false
-offset = Vector2(0, -6)
+offset = Vector2(0, -8)
 
 [node name="Magic" parent="." instance=ExtResource("3_ht767")]
 unique_name_in_owner = true
-magicScene = ExtResource("4_smrnq")

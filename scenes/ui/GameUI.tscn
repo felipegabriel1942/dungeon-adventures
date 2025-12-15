@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://ct35oa7tnxeuk"]
+[gd_scene load_steps=9 format=3 uid="uid://ct35oa7tnxeuk"]
 
 [ext_resource type="Texture2D" uid="uid://b41dcpe8btgaq" path="res://assets/panel-4.png" id="1_3pxe2"]
 [ext_resource type="Script" uid="uid://cwu020uo38mce" path="res://scenes/ui/GameUi.cs" id="1_627l5"]
 [ext_resource type="PackedScene" uid="uid://cjgk3hro2mnef" path="res://scenes/ui/HeroSection.tscn" id="2_xsfm0"]
 [ext_resource type="FontFile" uid="uid://oytdsfltcoeg" path="res://resources/Bitfantasy.ttf" id="4_xsfm0"]
 [ext_resource type="Texture2D" uid="uid://dy6hpow2lf4xc" path="res://assets/attack icon.png" id="5_rv83x"]
+[ext_resource type="Texture2D" uid="uid://p70jd2hfxxm6" path="res://assets/move-icon.png" id="5_wuuc8"]
 [ext_resource type="Texture2D" uid="uid://54vs520wvtr3" path="res://assets/hourglass-icon.png" id="6_627l5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3pxe2"]
@@ -58,7 +59,6 @@ size_flags_horizontal = 3
 
 [node name="ActionsMenuContainer" type="PanelContainer" parent="UIScaler/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 8
@@ -75,6 +75,7 @@ theme_override_colors/font_color = Color(0.47451, 0.266667, 0.290196, 1)
 theme_override_fonts/font = ExtResource("4_xsfm0")
 theme_override_font_sizes/font_size = 16
 text = "Mover-se"
+icon = ExtResource("5_wuuc8")
 flat = true
 alignment = 0
 

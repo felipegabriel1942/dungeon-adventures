@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Autoload;
@@ -39,14 +38,6 @@ public abstract partial class Character : Node2D
 
     public override void _PhysicsProcess(double delta)
     {
-        // if (HasMoved)
-        // {
-        //     animatedSprite2D.Modulate = new Color(0.5f, 0.5f, 0.5f, 1);
-        // } else
-        // {
-        //      animatedSprite2D.Modulate = new Color(1f, 1f, 1f, 1);
-        // }
-
         turnIndicator.Visible = IsMyTurn;
     }
 
@@ -103,6 +94,8 @@ public abstract partial class Character : Node2D
     {
         CurrentHealth -= damage;
 
+        GameEvents.EmitCharacterDamaged(this);
+
         if (CurrentHealth <= 0)
         {
             Die();
@@ -128,5 +121,10 @@ public abstract partial class Character : Node2D
         }
 
         return damage < 0 ? 0 : damage;
+    }
+
+    public Vector2I GetMapPosition()
+    {
+        return (Vector2I) GlobalPosition / 16;
     }
 }

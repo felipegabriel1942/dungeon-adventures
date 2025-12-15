@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://csxywimq3jrjw" path="res://scenes/character/hero/Mage.cs" id="1_wt5ga"]
 [ext_resource type="Resource" uid="uid://djfx8nvhaehn5" path="res://resources/character/mage.tres" id="2_p5lce"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="4_62wif"]
-[ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/Fireball.tscn" id="5_p5lce"]
+[ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/projectile/Fireball.tscn" id="5_p5lce"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="6_62wif"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_62wif"]
@@ -79,6 +79,7 @@ animations = [{
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_wt5ga")
+Spells = [ExtResource("5_p5lce")]
 resource = ExtResource("2_p5lce")
 
 [node name="TurnIndicator" parent="." instance=ExtResource("6_62wif")]
@@ -97,4 +98,4 @@ offset = Vector2(0, -5)
 
 [node name="Magic" parent="." instance=ExtResource("4_62wif")]
 unique_name_in_owner = true
-magicScene = ExtResource("5_p5lce")
+ProjectileScene = ExtResource("5_p5lce")

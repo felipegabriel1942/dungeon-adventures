@@ -23,8 +23,14 @@ public partial class GameEvents : Node
     [Signal]
     public delegate void AttackButtonPressedEventHandler();
 
-        [Signal]
+    [Signal]
     public delegate void MoveButtonPressedEventHandler();
+
+    [Signal]
+    public delegate void CharacterDamagedEventHandler(Character character);
+
+    [Signal]
+    public delegate void ProjectileHitTargetEventHandler(Character target);
 
     public override void _Notification(int what)
     {
@@ -61,5 +67,15 @@ public partial class GameEvents : Node
     public static void EmitMoveButtonPressed()
     {
         Instance.EmitSignal(SignalName.MoveButtonPressed);
+    }
+
+    public static void EmitCharacterDamaged(Character character)
+    {
+        Instance.EmitSignal(SignalName.CharacterDamaged, character);
+    }
+
+    public static void EmitProjectileHitTarget(Character target)
+    {
+        Instance.EmitSignal(SignalName.ProjectileHitTarget, target);
     }
 }
