@@ -36,6 +36,7 @@ public partial class Skeleton : Character
     protected override void Die()
     {
         GD.Print($"{this.resource.DisplayName} dies.");
+        GameEvents.EmitCharacterDied(this);
         QueueFree();
     }
 }

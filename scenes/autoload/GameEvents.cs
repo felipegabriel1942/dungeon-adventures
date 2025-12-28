@@ -32,6 +32,9 @@ public partial class GameEvents : Node
     [Signal]
     public delegate void CharacterHealthChangedEventHandler(Character character);
 
+    [Signal]
+    public delegate void CharacterDiedEventHandler(Character character);
+
     public override void _Notification(int what)
     {
         if (what == NotificationSceneInstantiated)
@@ -77,5 +80,10 @@ public partial class GameEvents : Node
     public static void EmitCharacterHealthChanged(Character character)
     {
         Instance.EmitSignal(SignalName.CharacterHealthChanged, character);
+    }
+
+    public static void EmitCharacterDied(Character character)
+    {
+        Instance.EmitSignal(SignalName.CharacterDied, character);
     }
 }

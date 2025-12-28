@@ -16,9 +16,11 @@ public partial class TurnManager : Node
     public override void _Ready()
     {
         GameEvents.Instance.Connect(GameEvents.SignalName.EndTurn, Callable.From(EndTurn));
+        GameEvents.Instance.Connect(GameEvents.SignalName.CharacterDied, Callable.From<Character>(OnCharacterDeath));
 
         CallDeferred(nameof(Init));
     }
+
 
     private void Init()
     {
@@ -39,10 +41,18 @@ public partial class TurnManager : Node
     {
         var finished = turnOrder.Dequeue();
         finished.EndMyTurn();
+
         turnOrder.Enqueue(finished);
 
         await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
 
         GameEvents.EmitBeginTurn(turnOrder.Peek());
-    } 
+    }
+
+    private void OnCharacterDeath(Character character)
+    {
+        turnOrder = new Queue<Character>(
+            turnOrder.Where(c => c != character)
+        );
+    }
 }
