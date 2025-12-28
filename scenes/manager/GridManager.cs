@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Game.Enum;
 using Godot;
 
 public partial class GridManager : Node
@@ -124,11 +125,6 @@ public partial class GridManager : Node
         toVisit.Enqueue(start);
         visited.Add(start);
 
-        // if (character.HasMoved)
-        // {
-        //     return new List<Vector2I>();
-        // }
-
         while (toVisit.Count > 0)
         {
             var current = toVisit.Dequeue();
@@ -194,12 +190,19 @@ public partial class GridManager : Node
         ClearHighlights();
 
         var attackableCells = GetCellsInCharacterAttackRange(character);
+
+        var color = new Color(1, 0, 0, 0.4f);
+
+        if (character.resource.CombatRole.Equals(CombatRole.HEALER))
+        {
+            color = new Color(0, 1, 0, 0.4f);
+        } 
         
         foreach(var cell in attackableCells)
         {
             var rect = new ColorRect
             {
-                Color = new Color(1, 0, 0, 0.4f),
+                Color = color,
                 Size = new Vector2(cellSize, cellSize),
                 Position = tileMapLayer.MapToLocal(cell) - new Vector2(cellSize / 2, cellSize / 2),
                 ZIndex = 1,
@@ -228,7 +231,12 @@ public partial class GridManager : Node
     {
         var cells = GetCellsInRange(tileMapLayer.LocalToMap(character.GlobalPosition), character.resource.AttackRange);
         cells.RemoveAll(t => GetCharacterAtCell(t) == character || !GetCellCustomData(t, "is_walkable").Item2);
-        // cells.RemoveAll(t => tileMapLayer.LocalToMap(character.GlobalPosition).X != t.X &&  tileMapLayer.LocalToMap(character.GlobalPosition).Y != t.Y);
+        
+        if (!character.resource.CombatRole.Equals(CombatRole.HEALER))
+        {
+            cells.RemoveAll(t => tileMapLayer.LocalToMap(character.GlobalPosition).X != t.X &&  tileMapLayer.LocalToMap(character.GlobalPosition).Y != t.Y);
+        }
+        
         return cells;
     }
 
@@ -255,11 +263,6 @@ public partial class GridManager : Node
     public Vector2 GetMousePosition() => tileMapLayer.GetGlobalMousePosition();
 
     public Vector2I GetMouseGridCellPosition() => LocalToMap(GetMousePosition());
-
-    public void HighlightCellsOnAttackRange()
-    {
-        GD.Print("Selecionando quem atacar");
-    }
 
     private static readonly Vector2I[] Directions4 =
     {

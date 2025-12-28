@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Game.Autoload;
 using Godot;
@@ -30,6 +29,7 @@ public partial class Mage : Character
 
     public override void Attack(Character target)
     {
+        HasAttacked = true;
         animatedSprite2D.Play("attack");
         
         IsAttacking = true;

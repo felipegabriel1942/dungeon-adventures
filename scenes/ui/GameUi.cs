@@ -21,6 +21,8 @@ public partial class GameUi : CanvasLayer
 
     private Button endTurnButton;
 
+    private Button healButton;
+
     private VBoxContainer heroSectionContainer;
 
     private PanelContainer actionsMenu;
@@ -36,24 +38,33 @@ public partial class GameUi : CanvasLayer
         moveButton = GetNode<Button>("%MoveButton");
         heroSectionContainer = GetNode<VBoxContainer>("%HeroSectionContainer");
         actionsMenu = GetNode<PanelContainer>("%ActionsMenuContainer");
+        healButton = GetNode<Button>("%HealButton");
 
         CreateHeroesSection();
 
         attackButton.MouseEntered += OnMouseEnter;
         attackButton.MouseExited += OnMouseExit;
+        attackButton.Pressed += OnAttackButtonPressed;
 
         moveButton.MouseEntered += OnMouseEnter;
         moveButton.MouseExited += OnMouseExit;
+        moveButton.Pressed += OnMoveButtonPressed;
 
         endTurnButton.MouseEntered += OnMouseEnter;
         endTurnButton.MouseExited += OnMouseExit;
-
         endTurnButton.Pressed += OnEndTurnButtonClicked;
-        attackButton.Pressed += OnAttackButtonPressed;
-        moveButton.Pressed += OnMoveButtonPressed;
+        
+        healButton.MouseEntered += OnMouseEnter;
+        healButton.MouseExited += OnMouseExit;
+        healButton.Pressed += OnHealButtonPressed;
 
         GameEvents.Instance.Connect(GameEvents.SignalName.PlayerStateChange, Callable.From<PlayerState>(OnPlayerStateChanged));
         GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(OnTurnBegin));
+    }
+
+    private void OnHealButtonPressed()
+    {
+        GameEvents.EmitAttackButtonPressed(); 
     }
 
     private void OnTurnBegin(Character character)
@@ -106,6 +117,22 @@ public partial class GameUi : CanvasLayer
         {
             case PlayerState.IDLE:
                 actionsMenu.Visible = currentCharacter.resource.Team.Equals(TeamType.Hero);
+
+                if (actionsMenu.Visible)
+                {
+                    switch (currentCharacter.resource.CombatRole)
+                    {
+                        case CombatRole.HEALER:
+                            attackButton.Visible = false;
+                            healButton.Visible = true;
+                            break;
+                        default:
+                            attackButton.Visible = true;
+                            healButton.Visible = false;
+                            break;
+                    }
+                }
+
                 break;
             case PlayerState.SELECT_MOVE:
                 actionsMenu.Visible = false;

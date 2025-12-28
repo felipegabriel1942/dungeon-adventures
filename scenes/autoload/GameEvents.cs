@@ -27,10 +27,10 @@ public partial class GameEvents : Node
     public delegate void MoveButtonPressedEventHandler();
 
     [Signal]
-    public delegate void CharacterDamagedEventHandler(Character character);
+    public delegate void ProjectileHitTargetEventHandler(Character target);
 
     [Signal]
-    public delegate void ProjectileHitTargetEventHandler(Character target);
+    public delegate void CharacterHealthChangedEventHandler(Character character);
 
     public override void _Notification(int what)
     {
@@ -69,13 +69,13 @@ public partial class GameEvents : Node
         Instance.EmitSignal(SignalName.MoveButtonPressed);
     }
 
-    public static void EmitCharacterDamaged(Character character)
-    {
-        Instance.EmitSignal(SignalName.CharacterDamaged, character);
-    }
-
     public static void EmitProjectileHitTarget(Character target)
     {
         Instance.EmitSignal(SignalName.ProjectileHitTarget, target);
+    }
+
+    public static void EmitCharacterHealthChanged(Character character)
+    {
+        Instance.EmitSignal(SignalName.CharacterHealthChanged, character);
     }
 }

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8ot86ctcsks2"]
+[gd_scene load_steps=12 format=3 uid="uid://b8ot86ctcsks2"]
 
 [ext_resource type="Texture2D" uid="uid://ck5ykryej4jgh" path="res://assets/characters/Cleric.png" id="1_eufvm"]
 [ext_resource type="Script" uid="uid://cjaqm4cmfy35h" path="res://scenes/character/hero/Cleric.cs" id="1_smrnq"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_u7maj"]
+[ext_resource type="PackedScene" uid="uid://d11rnbksn37g" path="res://scenes/projectile/Cure.tscn" id="2_45on5"]
 [ext_resource type="Resource" uid="uid://b501m73kr2tve" path="res://resources/character/cleric.tres" id="2_58cqp"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_wvyn4"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="3_ht767"]
@@ -44,6 +45,7 @@ animations = [{
 [node name="Cleric" type="Node2D"]
 y_sort_enabled = true
 script = ExtResource("1_smrnq")
+Spells = Array[PackedScene]([ExtResource("2_45on5")])
 resource = ExtResource("2_58cqp")
 
 [node name="TurnIndicator" parent="." instance=ExtResource("2_wvyn4")]

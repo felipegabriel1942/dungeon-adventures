@@ -1,3 +1,4 @@
+using Game.Enum;
 using Godot;
 
 namespace Game.Resources.Character;
@@ -32,4 +33,7 @@ public partial class CharacterResource : Resource
 
     [Export]
     public Texture2D Portrait { get; private set; }
+
+    [Export]
+    public CombatRole CombatRole { get; private set; }
 }

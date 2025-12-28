@@ -120,6 +120,7 @@ public partial class PlayerController : Node
         ChangeState(PlayerState.END_TURN);
         gridManager.ClearHighlights();
         characterOnTurn.HasMoved = false;
+        characterOnTurn.HasAttacked = false;
         characterOnTurn = null;
     }
 

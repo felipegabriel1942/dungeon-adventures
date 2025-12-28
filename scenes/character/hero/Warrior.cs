@@ -17,6 +17,7 @@ public partial class Warrior : Character
         animatedSprite2D.Play("attack");
         weapon.Visible = true;
         IsAttacking = true;
+        animatedSprite2D.FlipH = GetMapPosition().X < target.GetMapPosition().X;
         weapon.Attack();
         target.TakeDamage(CalculateDamage(target));
         weapon.AttackFinished += OnAttackFinished;

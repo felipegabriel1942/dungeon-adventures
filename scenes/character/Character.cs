@@ -94,7 +94,12 @@ public abstract partial class Character : Node2D
     {
         CurrentHealth -= damage;
 
-        GameEvents.EmitCharacterDamaged(this);
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+        }
+
+        GameEvents.EmitCharacterHealthChanged(this);
 
         if (CurrentHealth <= 0)
         {
@@ -126,5 +131,31 @@ public abstract partial class Character : Node2D
     public Vector2I GetMapPosition()
     {
         return (Vector2I) GlobalPosition / 16;
+    }
+
+    public async Task Heal(int healPoints)
+    {
+
+        PackedScene healingEffectScene = GD.Load<PackedScene>("res://scenes/HealingEffect.tscn");
+
+        var healingEffect = healingEffectScene.Instantiate();
+
+        AddChild(healingEffect);
+
+        CurrentHealth += healPoints;
+
+        if (CurrentHealth > resource.Health)
+        {
+            CurrentHealth = resource.Health;
+        } 
+
+        GameEvents.EmitCharacterHealthChanged(this);
+
+        GD.Print($"{resource.DisplayName} healed {healPoints} points.");
+
+        await ToSignal(GetTree().CreateTimer(2.0), "timeout");
+
+        RemoveChild(healingEffect);
+
     }
 }
