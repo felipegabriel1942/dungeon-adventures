@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Game.Autoload;
+using Game.Enum;
 using Game.Resources.Character;
 using Godot;
 
@@ -22,8 +23,12 @@ public abstract partial class Character : Node2D
 
     public int CurrentHealth;
 
+    private CharacterState characterState;
+
     public override void _Ready()
     {
+        characterState = CharacterState.IDLE;
+
         AddToGroup("characters");
         CalculateInitiative();
 
@@ -39,17 +44,57 @@ public abstract partial class Character : Node2D
     public override void _PhysicsProcess(double delta)
     {
         turnIndicator.Visible = IsMyTurn;
+
+        if (characterState == CharacterState.IDLE)
+        {
+            animatedSprite2D.Play("idle");
+        }
+
+        if (characterState != CharacterState.MOVING)
+            return;
+
+        Vector2 movement = Position - currentPosition;
+
+        if (movement.Length() > 0.001f)
+        {
+            if (Mathf.Abs(movement.X) > Mathf.Abs(movement.Y))
+            {
+                if (movement.X > 0)
+                {
+                    animatedSprite2D.FlipH = false;
+                    animatedSprite2D.Play("walk_side");
+                } else
+                {
+                    animatedSprite2D.FlipH = true;
+                    animatedSprite2D.Play("walk_side");
+                }
+            } else
+            {
+                if (movement.Y > 0)
+                {
+                    animatedSprite2D.Play("walk_down");
+                } else
+                {
+                    animatedSprite2D.Play("walk_up");
+                }
+            } 
+        }
+
+        currentPosition = Position;
+
     }
+
+    private Vector2 currentPosition;
 
     public async Task Move(List<Vector2> path)
     {
-        var tween = CreateTween()
-            .SetTrans(Tween.TransitionType.Sine)
-            .SetEase(Tween.EaseType.InOut);
+        characterState = CharacterState.MOVING;
+
+        var tween = CreateTween();
 
         foreach (var cell in path)
         {
-            tween.TweenProperty(this, "position", cell, 0.2);
+            tween.TweenProperty(this, "position", cell, 0.4);
         }
 
         await ToSignal(tween, "finished");
@@ -57,6 +102,8 @@ public abstract partial class Character : Node2D
         tween.Dispose();
 
         HasMoved = true;
+
+        characterState = CharacterState.IDLE;
         
         // TODO: Verificar se esse trecho de codigo pode ir para o enemy controller
         if (resource.Team.Equals(TeamType.Enemy))
@@ -92,7 +139,10 @@ public abstract partial class Character : Node2D
 
     public void TakeDamage(int damage)
     {
+
         CurrentHealth -= damage;
+
+        addFloatingPoints(damage, "");
 
         if (CurrentHealth < 0)
         {
@@ -158,4 +208,15 @@ public abstract partial class Character : Node2D
         RemoveChild(healingEffect);
 
     }
+
+    private void addFloatingPoints(int points, string type)
+    {
+        var floatingTextScene = GD.Load<PackedScene>("res://scenes/ui/FloatingText.tscn");
+        var floatingTextInstance = floatingTextScene.Instantiate<FloatingText>();
+
+        GetParent().AddChild(floatingTextInstance);
+
+        floatingTextInstance.GlobalPosition = new Vector2(GlobalPosition.X + 14, GlobalPosition.Y - 14);
+        floatingTextInstance.SetText(points.ToString(), "");
+    } 
 }
