@@ -11,24 +11,6 @@ public partial class Warrior : Character
         base._Ready();
     }
 
-    public override void Attack(Character target)
-    {
-        HasAttacked = true;
-        animatedSprite2D.Play("attack");
-        weapon.Visible = true;
-        IsAttacking = true;
-        animatedSprite2D.FlipH = GetMapPosition().X < target.GetMapPosition().X;
-        weapon.Attack();
-        target.TakeDamage(CalculateDamage(target));
-        weapon.AttackFinished += OnAttackFinished;
-    }
-
-    private void OnAttackFinished()
-    {
-        IsAttacking = false;
-        animatedSprite2D.Play("idle");
-    }
-
     protected override void Die()
     {
         throw new System.NotImplementedException();

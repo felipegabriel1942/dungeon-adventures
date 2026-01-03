@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cra3c44qngxn8"]
+[gd_scene load_steps=50 format=3 uid="uid://cra3c44qngxn8"]
 
 [ext_resource type="Script" uid="uid://m4u1ej55ybwh" path="res://scenes/character/enemy/Skeleton.cs" id="1_m4q1t"]
 [ext_resource type="Texture2D" uid="uid://defhp0rcn8p1v" path="res://assets/characters/Skeleton.png" id="1_xdbfw"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_h2w6i"]
 [ext_resource type="Texture2D" uid="uid://bc3kwrlwkyqt4" path="res://assets/healthbar.png" id="6_5gx4p"]
 [ext_resource type="Texture2D" uid="uid://c1sov8yvpo82q" path="res://assets/characters/Skeleton(2).png" id="6_f1edn"]
+[ext_resource type="Texture2D" uid="uid://dpmm3fk87aymw" path="res://assets/characters/Skeleton Hurt.png" id="6_pty7h"]
 [ext_resource type="Texture2D" uid="uid://iobewyc73qqc" path="res://assets/life.png" id="7_f1edn"]
 [ext_resource type="Texture2D" uid="uid://cqlqmro6agdrj" path="res://assets/characters/Skeleton Walk.png" id="7_jd50h"]
 
@@ -29,6 +30,22 @@ region = Rect2(96, 32, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1edn"]
 atlas = ExtResource("1_xdbfw")
 region = Rect2(128, 32, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jka68"]
+atlas = ExtResource("6_pty7h")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6le4d"]
+atlas = ExtResource("6_pty7h")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66ngs"]
+atlas = ExtResource("6_pty7h")
+region = Rect2(112, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_grk5n"]
+atlas = ExtResource("6_pty7h")
+region = Rect2(160, 16, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jd50h"]
 atlas = ExtResource("6_f1edn")
@@ -166,6 +183,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_jka68")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6le4d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66ngs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_grk5n")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_jd50h")
 }, {
 "duration": 1.0,
@@ -287,7 +321,7 @@ offset = Vector2(0, -5)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 9)
 sprite_frames = SubResource("SpriteFrames_h2w6i")
-animation = &"walk_up"
+animation = &"idle"
 autoplay = "idle"
 offset = Vector2(8, -8)
 

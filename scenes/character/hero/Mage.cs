@@ -26,20 +26,19 @@ public partial class Mage : Character
         animatedSprite2D.Play("idle");
     }
 
-
-    public override void Attack(Character target)
-    {
-        HasAttacked = true;
-        animatedSprite2D.Play("attack");
+    // public override void Attack(Character target)
+    // {
+    //     HasAttacked = true;
+    //     animatedSprite2D.Play("attack");
         
-        IsAttacking = true;
-        var spell = Spells.First().Instantiate<Projectile>();
+    //     IsAttacking = true;
+    //     var spell = Spells.First().Instantiate<Projectile>();
 
-        animatedSprite2D.FlipH = GetMapPosition().X < target.GetMapPosition().X;
+    //     animatedSprite2D.FlipH = GetMapPosition().X < target.GetMapPosition().X;
 
-        spell.Initialize(GlobalPosition, target);
-        AddChild(spell);
-    }
+    //     spell.Initialize(GlobalPosition, target);
+    //     AddChild(spell);
+    // }
 
     protected override void Die()
     {

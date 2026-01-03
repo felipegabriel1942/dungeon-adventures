@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://wpuexcsgtmrb"]
+[gd_scene load_steps=50 format=3 uid="uid://wpuexcsgtmrb"]
 
 [ext_resource type="Script" uid="uid://bxbc0aloqabk3" path="res://scenes/character/hero/Warrior.cs" id="1_o24pb"]
 [ext_resource type="Texture2D" uid="uid://di6kcyudplpuf" path="res://assets/characters/Warrior.png" id="1_q41t4"]
@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://cs4fptlto0nos" path="res://resources/character/warrior.tres" id="2_xyvlm"]
 [ext_resource type="PackedScene" uid="uid://dukb0ioeynfmm" path="res://scenes/equipment/Weapon.tscn" id="4_10y84"]
 [ext_resource type="PackedScene" uid="uid://cj2at7rklrtt7" path="res://scenes/equipment/Sword.tscn" id="5_4tdtf"]
+[ext_resource type="Texture2D" uid="uid://lsfn817uipg0" path="res://assets/characters/Warrior Attack.png" id="6_2ulie"]
 [ext_resource type="Texture2D" uid="uid://54yxnlixvyj5" path="res://assets/characters/Warrior(2).png" id="6_ui8ss"]
 [ext_resource type="Texture2D" uid="uid://dtcpklmct4u1m" path="res://assets/characters/Warrior Walk.png" id="7_b0thr"]
 
@@ -25,6 +26,30 @@ region = Rect2(32, 64, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_b0thr"]
 atlas = ExtResource("1_q41t4")
 region = Rect2(48, 64, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6o61e"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ts67o"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 48, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwh5w"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdlwh"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 144, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2ki0y"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_viirt"]
+atlas = ExtResource("6_2ulie")
+region = Rect2(0, 240, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2ulie"]
 atlas = ExtResource("6_ui8ss")
@@ -159,6 +184,29 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_6o61e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ts67o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jwh5w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdlwh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2ki0y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_viirt")
+}],
+"loop": false,
+"name": &"attack_side",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_2ulie")
 }, {
 "duration": 1.0,
@@ -268,6 +316,8 @@ y_sort_enabled = true
 script = ExtResource("1_o24pb")
 resource = ExtResource("2_xyvlm")
 
+[node name="Node" type="Node" parent="."]
+
 [node name="TurnIndicator" parent="." instance=ExtResource("2_4tdtf")]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -280,12 +330,14 @@ offset = Vector2(0, -8)
 z_index = 1
 y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_2rco0")
-animation = &"walk_down"
+animation = &"attack_side"
 autoplay = "idle"
-frame_progress = 0.739154
+frame = 5
+frame_progress = 1.0
 centered = false
 offset = Vector2(0, -8)
 
 [node name="Weapon" parent="." instance=ExtResource("4_10y84")]
 unique_name_in_owner = true
+visible = false
 weaponScene = ExtResource("5_4tdtf")

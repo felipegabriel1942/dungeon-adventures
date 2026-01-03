@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Game.Autoload;
 using Game.Enum;
 using Game.Resources.Character;
+using Game.Scripts;
 using Godot;
 
 public abstract partial class Character : Node2D
@@ -11,23 +12,23 @@ public abstract partial class Character : Node2D
     [Export]
     public CharacterResource resource { get; private set; }
 
-    private Node2D turnIndicator;
+    public CharacterStateMachine StateMachine { get; private set; }
 
     protected AnimatedSprite2D animatedSprite2D;
     public bool IsAttacking;
     public bool HasMoved;
     public bool HasAttacked;
-
     public int Initiative { get; private set; }
     public bool IsMyTurn { get; protected set; }
-
     public int CurrentHealth;
 
-    private CharacterState characterState;
+    // private CharacterState characterState;
+    private Vector2 currentPosition;
+    private Node2D turnIndicator;
 
     public override void _Ready()
     {
-        characterState = CharacterState.IDLE;
+        StateMachine = new CharacterStateMachine();
 
         AddToGroup("characters");
         CalculateInitiative();
@@ -36,21 +37,72 @@ public abstract partial class Character : Node2D
 
         CurrentHealth = resource.Health;
 
+        animatedSprite2D.AnimationFinished += OnAnimationFinished;
+
         GameEvents.Instance.Connect(GameEvents.SignalName.BeginTurn, Callable.From<Character>(SetMyTurn));
     }
 
-    public abstract void Attack(Character target);
+    private void OnAnimationFinished()
+    {
+        if (animatedSprite2D.Animation == "hurt")
+        {
+            StateMachine.SetState(CharacterState.IDLE);
+        }
+
+        if (animatedSprite2D.Animation == "attack_side")
+        {
+            StateMachine.SetState(CharacterState.IDLE);
+        }
+    }
+
+    public void Attack(Character target)
+    {
+        StateMachine.SetState(CharacterState.ATTACKING);
+
+        IsAttacking = true;
+
+        animatedSprite2D.FlipH = GetMapPosition().X < target.GetMapPosition().X;
+
+        if (resource.CombatRole.Equals(CombatRole.HEALER))
+        {
+            _ = target.Heal(Dice.Roll());
+        } else
+        {
+            target.TakeDamage(CalculateDamage(target));
+        }
+
+        if (resource.Team.Equals(TeamType.Hero))
+        {
+            HasAttacked = true;
+        }
+
+        if (resource.Team.Equals(TeamType.Enemy))
+        {
+            IsMyTurn = false;
+            GameEvents.EmitEndTurn();   
+        }
+    }
 
     public override void _PhysicsProcess(double delta)
     {
         turnIndicator.Visible = IsMyTurn;
 
-        if (characterState == CharacterState.IDLE)
+        if (StateMachine.CurrentState == CharacterState.ATTACKING)
+        {
+            animatedSprite2D.Play("attack_side");
+        }
+
+        if (StateMachine.CurrentState == CharacterState.HURT)
+        {
+            animatedSprite2D.Play("hurt");
+        }
+
+        if (StateMachine.CurrentState == CharacterState.IDLE)
         {
             animatedSprite2D.Play("idle");
         }
 
-        if (characterState != CharacterState.MOVING)
+        if (StateMachine.CurrentState != CharacterState.MOVING)
             return;
 
         Vector2 movement = Position - currentPosition;
@@ -84,11 +136,9 @@ public abstract partial class Character : Node2D
 
     }
 
-    private Vector2 currentPosition;
-
     public async Task Move(List<Vector2> path)
     {
-        characterState = CharacterState.MOVING;
+        StateMachine.SetState(CharacterState.MOVING);
 
         var tween = CreateTween();
 
@@ -103,7 +153,7 @@ public abstract partial class Character : Node2D
 
         HasMoved = true;
 
-        characterState = CharacterState.IDLE;
+        StateMachine.SetState(CharacterState.IDLE);
         
         // TODO: Verificar se esse trecho de codigo pode ir para o enemy controller
         if (resource.Team.Equals(TeamType.Enemy))
@@ -139,6 +189,7 @@ public abstract partial class Character : Node2D
 
     public void TakeDamage(int damage)
     {
+        StateMachine.SetState(CharacterState.HURT);
 
         CurrentHealth -= damage;
 
@@ -201,9 +252,9 @@ public abstract partial class Character : Node2D
 
         GameEvents.EmitCharacterHealthChanged(this);
 
-        GD.Print($"{resource.DisplayName} healed {healPoints} points.");
-
         await ToSignal(GetTree().CreateTimer(2.0), "timeout");
+
+        GD.Print($"{resource.DisplayName} healed {healPoints} points.");
 
         RemoveChild(healingEffect);
 

@@ -14,5 +14,5 @@ Defense = 4
 AttackRange = 3
 Team = 0
 Portrait = ExtResource("1_tb8uq")
-CombatRole = 1
+CombatRole = 2
 metadata/_custom_type_script = "uid://fgugi0x47l8u"
