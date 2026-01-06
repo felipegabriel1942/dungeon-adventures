@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://b8ot86ctcsks2"]
+[gd_scene load_steps=46 format=3 uid="uid://b8ot86ctcsks2"]
 
 [ext_resource type="Texture2D" uid="uid://ck5ykryej4jgh" path="res://assets/characters/Cleric.png" id="1_eufvm"]
 [ext_resource type="Script" uid="uid://cjaqm4cmfy35h" path="res://scenes/character/hero/Cleric.cs" id="1_smrnq"]
@@ -7,8 +7,14 @@
 [ext_resource type="Resource" uid="uid://b501m73kr2tve" path="res://resources/character/cleric.tres" id="2_58cqp"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_wvyn4"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="3_ht767"]
+[ext_resource type="PackedScene" uid="uid://5wp1pk6nhs2c" path="res://scenes/component/CharacterStateMachine.tscn" id="5_v130e"]
+[ext_resource type="PackedScene" uid="uid://3isa5h85uwlp" path="res://scenes/component/CharacterOrientation.tscn" id="6_06d7a"]
 [ext_resource type="Texture2D" uid="uid://bj7gaimtphlry" path="res://assets/characters/Cleric Idle.png" id="7_45on5"]
 [ext_resource type="Texture2D" uid="uid://dflam4jorlkqa" path="res://assets/characters/Cleric Walk.png" id="8_0buca"]
+[ext_resource type="PackedScene" uid="uid://dhmhw2i86inoy" path="res://scenes/component/HealthComponent.tscn" id="8_t67wx"]
+[ext_resource type="PackedScene" uid="uid://bd6h7hsh37v0s" path="res://scenes/component/CharacterAnimationComponent.tscn" id="10_q24x3"]
+[ext_resource type="PackedScene" uid="uid://qntrjw0iyqbl" path="res://scenes/component/MovementComponent.tscn" id="13_7m2wa"]
+[ext_resource type="PackedScene" uid="uid://c1wng8fcjpr11" path="res://scenes/component/VFXComponent.tscn" id="15_1gimw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_smrnq"]
 atlas = ExtResource("1_eufvm")
@@ -246,6 +252,20 @@ y_sort_enabled = true
 script = ExtResource("1_smrnq")
 Spells = Array[PackedScene]([ExtResource("2_45on5")])
 resource = ExtResource("2_58cqp")
+
+[node name="CharacterAnimationComponent" parent="." node_paths=PackedStringArray("animatedSprite2D", "characterOrientation") instance=ExtResource("10_q24x3")]
+animatedSprite2D = NodePath("../AnimatedSprite2D")
+characterOrientation = NodePath("../CharacterOrientation")
+
+[node name="CharacterStateMachine" parent="." instance=ExtResource("5_v130e")]
+
+[node name="CharacterOrientation" parent="." instance=ExtResource("6_06d7a")]
+
+[node name="MovementComponent" parent="." instance=ExtResource("13_7m2wa")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("8_t67wx")]
+
+[node name="VFXComponent" parent="." instance=ExtResource("15_1gimw")]
 
 [node name="TurnIndicator" parent="." instance=ExtResource("2_wvyn4")]
 

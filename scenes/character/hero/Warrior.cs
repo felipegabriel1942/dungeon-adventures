@@ -6,7 +6,7 @@ public partial class Warrior : Character
 
     public override void _Ready()
     {
-        animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        // animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         weapon = GetNode<Weapon>("%Weapon");
         base._Ready();
     }

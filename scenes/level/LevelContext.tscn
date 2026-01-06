@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqya4md0odob8"]
+
+[ext_resource type="Script" uid="uid://ced2tbyglp02o" path="res://scenes/level/LevelContext.cs" id="1_r5vwh"]
+
+[node name="LevelContext" type="Node"]
+script = ExtResource("1_r5vwh")

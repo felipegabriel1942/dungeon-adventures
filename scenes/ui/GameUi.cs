@@ -1,5 +1,6 @@
 using Game.Autoload;
 using Game.Enum;
+using Game.Level;
 using Game.Resources.Character;
 
 using Godot;
@@ -16,20 +17,14 @@ public partial class GameUi : CanvasLayer
     private PackedScene heroSectionScene;
 
     private Button moveButton;
-
     private Button attackButton;
-
     private Button endTurnButton;
-
     private Button healButton;
-
     private VBoxContainer heroSectionContainer;
-
     private PanelContainer actionsMenu;
-
     private PlayerState currentPlayerState;
-
     private Character currentCharacter;
+    private LevelContext levelContext;
 
     public override void _Ready()
     {
@@ -39,8 +34,9 @@ public partial class GameUi : CanvasLayer
         heroSectionContainer = GetNode<VBoxContainer>("%HeroSectionContainer");
         actionsMenu = GetNode<PanelContainer>("%ActionsMenuContainer");
         healButton = GetNode<Button>("%HealButton");
+        levelContext = GetTree().GetFirstNodeInGroup("level_context") as LevelContext;
 
-        CreateHeroesSection();
+        levelContext.CharactersReady += CreateHeroesSection;
 
         attackButton.MouseEntered += OnMouseEnter;
         attackButton.MouseExited += OnMouseExit;
@@ -99,11 +95,11 @@ public partial class GameUi : CanvasLayer
 
     private void CreateHeroesSection()
     {
-        foreach (var heroResource in heroesResources)
+        foreach (var hero in levelContext.Heroes)
         {
             var heroSection = heroSectionScene.Instantiate<HeroSection>();
             heroSectionContainer.AddChild(heroSection);
-            heroSection.SetHeroResource(heroResource);
+            heroSection.SetHero(hero);
         }
     }
 

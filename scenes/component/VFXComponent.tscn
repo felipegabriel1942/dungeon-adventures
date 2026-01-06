@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1wng8fcjpr11"]
+
+[ext_resource type="Script" uid="uid://m8dlt8j2xbm6" path="res://scenes/component/VFXComponent.cs" id="1_0sr3f"]
+
+[node name="VFXComponent" type="Node"]
+script = ExtResource("1_0sr3f")

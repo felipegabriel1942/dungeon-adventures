@@ -102,7 +102,7 @@ public partial class GridManager : Node
         grid.SetPointSolid(targetCell, true);
 
         ClearHighlights();
-        await character.Move(path.Skip(1).ToList());
+        character.Move(path.Skip(1).ToList());
     }
 
     public bool CanMoveToTargetPosition(Character character, Vector2 targetPos)

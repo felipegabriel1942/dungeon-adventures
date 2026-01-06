@@ -1,10 +1,13 @@
-using System.Linq;
 using Game;
+using Game.Level;
 using Game.UI;
 using Godot;
 
 public partial class BaseLevel : Node
 {
+
+    [Export]
+    private LevelContext levelContext;
 
     private GridManager gridManager;
     private GameCamera gameCamera;

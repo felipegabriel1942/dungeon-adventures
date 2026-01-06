@@ -1,14 +1,20 @@
-[gd_scene load_steps=42 format=3 uid="uid://dqmkuh2llmqja"]
+[gd_scene load_steps=48 format=3 uid="uid://dqmkuh2llmqja"]
 
 [ext_resource type="Texture2D" uid="uid://bokf0bo43svxt" path="res://assets/characters/Mage.png" id="1_a78et"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_v54v6"]
 [ext_resource type="Script" uid="uid://csxywimq3jrjw" path="res://scenes/character/hero/Mage.cs" id="1_wt5ga"]
 [ext_resource type="Resource" uid="uid://djfx8nvhaehn5" path="res://resources/character/mage.tres" id="2_p5lce"]
+[ext_resource type="PackedScene" uid="uid://bd6h7hsh37v0s" path="res://scenes/component/CharacterAnimationComponent.tscn" id="4_3qtwn"]
 [ext_resource type="PackedScene" uid="uid://cpu3mi75n1rh" path="res://scenes/Magic.tscn" id="4_62wif"]
+[ext_resource type="PackedScene" uid="uid://5wp1pk6nhs2c" path="res://scenes/component/CharacterStateMachine.tscn" id="5_8riip"]
 [ext_resource type="PackedScene" uid="uid://ba4x7a8wfsuae" path="res://scenes/projectile/Fireball.tscn" id="5_p5lce"]
+[ext_resource type="PackedScene" uid="uid://3isa5h85uwlp" path="res://scenes/component/CharacterOrientation.tscn" id="6_8riip"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="6_62wif"]
+[ext_resource type="PackedScene" uid="uid://qntrjw0iyqbl" path="res://scenes/component/MovementComponent.tscn" id="7_burbo"]
 [ext_resource type="Texture2D" uid="uid://d31o76af1w7vu" path="res://assets/characters/Mage(2).png" id="7_yngp3"]
 [ext_resource type="Texture2D" uid="uid://lvt6kll7hxkt" path="res://assets/characters/Mage Walk.png" id="8_5t3b6"]
+[ext_resource type="PackedScene" uid="uid://dhmhw2i86inoy" path="res://scenes/component/HealthComponent.tscn" id="8_uajg7"]
+[ext_resource type="PackedScene" uid="uid://c1wng8fcjpr11" path="res://scenes/component/VFXComponent.tscn" id="9_v602r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_62wif"]
 atlas = ExtResource("1_a78et")
@@ -266,6 +272,20 @@ y_sort_enabled = true
 script = ExtResource("1_wt5ga")
 Spells = [ExtResource("5_p5lce")]
 resource = ExtResource("2_p5lce")
+
+[node name="CharacterAnimationComponent" parent="." node_paths=PackedStringArray("animatedSprite2D", "characterOrientation") instance=ExtResource("4_3qtwn")]
+animatedSprite2D = NodePath("../AnimatedSprite2D")
+characterOrientation = NodePath("../CharacterOrientation")
+
+[node name="CharacterStateMachine" parent="." instance=ExtResource("5_8riip")]
+
+[node name="CharacterOrientation" parent="." instance=ExtResource("6_8riip")]
+
+[node name="MovementComponent" parent="." instance=ExtResource("7_burbo")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("8_uajg7")]
+
+[node name="VFXComponent" parent="." instance=ExtResource("9_v602r")]
 
 [node name="TurnIndicator" parent="." instance=ExtResource("6_62wif")]
 

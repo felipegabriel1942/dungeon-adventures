@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://3isa5h85uwlp"]
+
+[ext_resource type="Script" uid="uid://bhowg8w7u10qd" path="res://scenes/component/CharacterOrientation.cs" id="1_pcr8e"]
+
+[node name="CharacterOrientation" type="Node"]
+script = ExtResource("1_pcr8e")

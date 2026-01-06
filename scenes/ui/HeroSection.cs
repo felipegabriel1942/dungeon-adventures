@@ -1,40 +1,33 @@
-using Game.Autoload;
-using Game.Resources.Character;
 using Godot;
 
 namespace Game.UI;
 
 public partial class HeroSection : PanelContainer
 {
-    
-    private TextureRect heroPortraitTextureRect;
-
-    private Label heroNameLabel;
-
-    private Label heroHealthLabel;
+    private TextureRect portrait;
+    private Label name;
+    private Label health;
 
     public override void _Ready()
     {
-        heroPortraitTextureRect = GetNode<TextureRect>("%HeroPortraitTextureRect");
-        heroNameLabel = GetNode<Label>("%HeroNameLabel");
-        heroHealthLabel = GetNode<Label>("%HeroHealthLabel");
-        GameEvents.Instance.Connect(GameEvents.SignalName.CharacterHealthChanged, Callable.From<Character>(OnCharacterHealthChanged));      
+        portrait = GetNode<TextureRect>("%HeroPortraitTextureRect");
+        name = GetNode<Label>("%HeroNameLabel");
+        health = GetNode<Label>("%HeroHealthLabel");
+        // GameEvents.Instance.Connect(GameEvents.SignalName.CharacterHealthChanged, Callable.From<Character>(OnCharacterHealthChanged));      
+    }
+
+    public void SetHero(Character hero)
+    {
+        portrait.Texture = hero.resource.Portrait;
+        name.Text = hero.resource.DisplayName;
+        health.Text = $"{hero.resource.Health}/{hero.resource.Health}";
     }
 
     private void OnCharacterHealthChanged(Character character)
     {
-        if (character.resource.DisplayName.Equals(heroNameLabel.Text))
+        if (character.resource.DisplayName.Equals(name.Text))
         {
-            heroHealthLabel.Text = $"{character.CurrentHealth}/{character.resource.Health}";
+            health.Text = $"{character.CurrentHealth}/{character.resource.Health}";
         }   
     }
-
-
-    public void SetHeroResource(CharacterResource characterResource)
-    {
-        heroPortraitTextureRect.Texture = characterResource.Portrait;
-        heroNameLabel.Text = characterResource.DisplayName;
-        heroHealthLabel.Text = $"{characterResource.Health}/{characterResource.Health}";
-    }
-
 }

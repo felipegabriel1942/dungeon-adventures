@@ -5,7 +5,7 @@ public partial class Skeleton : Character
 {
     public override void _Ready()
     {
-        animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        // animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         
         base._Ready();
     }

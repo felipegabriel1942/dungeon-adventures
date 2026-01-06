@@ -30,9 +30,6 @@ public partial class GameEvents : Node
     public delegate void ProjectileHitTargetEventHandler(Character target);
 
     [Signal]
-    public delegate void CharacterHealthChangedEventHandler(Character character);
-
-    [Signal]
     public delegate void CharacterDiedEventHandler(Character character);
 
     public override void _Notification(int what)
@@ -75,11 +72,6 @@ public partial class GameEvents : Node
     public static void EmitProjectileHitTarget(Character target)
     {
         Instance.EmitSignal(SignalName.ProjectileHitTarget, target);
-    }
-
-    public static void EmitCharacterHealthChanged(Character character)
-    {
-        Instance.EmitSignal(SignalName.CharacterHealthChanged, character);
     }
 
     public static void EmitCharacterDied(Character character)

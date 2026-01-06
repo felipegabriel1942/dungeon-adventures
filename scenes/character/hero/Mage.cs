@@ -12,7 +12,7 @@ public partial class Mage : Character
 
     public override void _Ready()
     {
-        animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+        // animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
         magic = GetNode<Magic>("%Magic");
 
         GameEvents.Instance.Connect(GameEvents.SignalName.ProjectileHitTarget, Callable.From<Character>(OnSpellHit));
@@ -23,7 +23,7 @@ public partial class Mage : Character
     {
         target.TakeDamage(CalculateDamage(target));
         IsAttacking = false;
-        animatedSprite2D.Play("idle");
+        // animatedSprite2D.Play("idle");
     }
 
     // public override void Attack(Character target)

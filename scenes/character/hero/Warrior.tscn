@@ -1,15 +1,21 @@
-[gd_scene load_steps=50 format=3 uid="uid://wpuexcsgtmrb"]
+[gd_scene load_steps=56 format=3 uid="uid://wpuexcsgtmrb"]
 
 [ext_resource type="Script" uid="uid://bxbc0aloqabk3" path="res://scenes/character/hero/Warrior.cs" id="1_o24pb"]
 [ext_resource type="Texture2D" uid="uid://di6kcyudplpuf" path="res://assets/characters/Warrior.png" id="1_q41t4"]
 [ext_resource type="Texture2D" uid="uid://njcjl3m6qumc" path="res://assets/characters/Shadow.png" id="1_xvo0l"]
 [ext_resource type="PackedScene" uid="uid://c5uia0rw02ykd" path="res://scenes/TurnIndicator.tscn" id="2_4tdtf"]
 [ext_resource type="Resource" uid="uid://cs4fptlto0nos" path="res://resources/character/warrior.tres" id="2_xyvlm"]
+[ext_resource type="PackedScene" uid="uid://bd6h7hsh37v0s" path="res://scenes/component/CharacterAnimationComponent.tscn" id="3_lthve"]
+[ext_resource type="PackedScene" uid="uid://5wp1pk6nhs2c" path="res://scenes/component/CharacterStateMachine.tscn" id="4_1sjaf"]
 [ext_resource type="PackedScene" uid="uid://dukb0ioeynfmm" path="res://scenes/equipment/Weapon.tscn" id="4_10y84"]
+[ext_resource type="PackedScene" uid="uid://3isa5h85uwlp" path="res://scenes/component/CharacterOrientation.tscn" id="5_1sjaf"]
 [ext_resource type="PackedScene" uid="uid://cj2at7rklrtt7" path="res://scenes/equipment/Sword.tscn" id="5_4tdtf"]
 [ext_resource type="Texture2D" uid="uid://lsfn817uipg0" path="res://assets/characters/Warrior Attack.png" id="6_2ulie"]
+[ext_resource type="PackedScene" uid="uid://qntrjw0iyqbl" path="res://scenes/component/MovementComponent.tscn" id="6_nykxh"]
 [ext_resource type="Texture2D" uid="uid://54yxnlixvyj5" path="res://assets/characters/Warrior(2).png" id="6_ui8ss"]
 [ext_resource type="Texture2D" uid="uid://dtcpklmct4u1m" path="res://assets/characters/Warrior Walk.png" id="7_b0thr"]
+[ext_resource type="PackedScene" uid="uid://dhmhw2i86inoy" path="res://scenes/component/HealthComponent.tscn" id="7_scwex"]
+[ext_resource type="PackedScene" uid="uid://c1wng8fcjpr11" path="res://scenes/component/VFXComponent.tscn" id="16_jxjqj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4tdtf"]
 atlas = ExtResource("1_q41t4")
@@ -316,7 +322,19 @@ y_sort_enabled = true
 script = ExtResource("1_o24pb")
 resource = ExtResource("2_xyvlm")
 
-[node name="Node" type="Node" parent="."]
+[node name="CharacterAnimationComponent" parent="." node_paths=PackedStringArray("animatedSprite2D", "characterOrientation") instance=ExtResource("3_lthve")]
+animatedSprite2D = NodePath("../AnimatedSprite2D")
+characterOrientation = NodePath("../CharacterOrientation")
+
+[node name="CharacterStateMachine" parent="." instance=ExtResource("4_1sjaf")]
+
+[node name="CharacterOrientation" parent="." instance=ExtResource("5_1sjaf")]
+
+[node name="MovementComponent" parent="." instance=ExtResource("6_nykxh")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("7_scwex")]
+
+[node name="VFXComponent" parent="." instance=ExtResource("16_jxjqj")]
 
 [node name="TurnIndicator" parent="." instance=ExtResource("2_4tdtf")]
 
@@ -332,8 +350,6 @@ y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_2rco0")
 animation = &"attack_side"
 autoplay = "idle"
-frame = 5
-frame_progress = 1.0
 centered = false
 offset = Vector2(0, -8)
 
